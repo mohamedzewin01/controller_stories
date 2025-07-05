@@ -2,6 +2,7 @@ import 'package:controller_stories/features/Categories/presentation/pages/Catego
 import 'package:controller_stories/features/Clips/presentation/pages/Clips_page.dart';
 import 'package:controller_stories/features/Home/presentation/pages/Home_page.dart';
 import 'package:controller_stories/features/Stories/presentation/pages/Stories_page.dart';
+
 import 'package:flutter/material.dart';
 
 
@@ -26,8 +27,8 @@ class RouteGenerator {
         return SlideFromBottomAnimation(const HomePage());
       case RoutesManager.clipsPage:
         return SlideFromBottomAnimation(const ClipsPage());
-      case RoutesManager.storiesPage:
-        return SlideFromBottomAnimation(const StoriesPage());
+      // case RoutesManager.storiesPage:
+      //   return SlideFromBottomAnimation(const StoriesPage());
       default:
         return unDefinedRoute();
     }

@@ -1,3 +1,4 @@
+import 'package:controller_stories/features/Stories/presentation/pages/Stories_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -1078,7 +1079,15 @@ class CategoryDetailsSheet extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed: () {
                     Navigator.pop(context);
-                    // TODO: Navigate to stories in this category
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => StoriesPage(
+                          categoryId:category.categoryId??0 ,
+                          categoryName: category.categoryName??'',
+                        ),
+                      ),
+                    );
                   },
                   icon: const Icon(Icons.auto_stories_rounded),
                   label: const Text('القصص'),
