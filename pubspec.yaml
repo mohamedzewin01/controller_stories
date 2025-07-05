@@ -1,0 +1,146 @@
+name: controller_stories
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.0
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  flutter_localizations:
+    sdk: flutter
+  bloc: any
+  bloc_test: any
+  blur: any
+  dio: any
+  #  google_fonts: any
+  get: any
+  carousel_slider: any
+  cached_network_image: any
+  shared_preferences: any
+  animated_theme_switcher: any
+  flutter_launcher_icons: any
+  device_info_plus: any
+  injectable: any
+  intl: any
+  json_annotation: any
+  get_it: any
+  pretty_dio_logger: any
+  flutter_svg: any
+  flutter_bloc: any
+  device_preview: any
+  skeletonizer: any
+  firebase_core: ^3.13.1
+  firebase_analytics: any
+  firebase_crashlytics: any
+  cloud_firestore: any
+  http:
+  share_plus:
+  auto_size_text: ^3.0.0
+  flutter_html: any
+  url_launcher: any
+  flutter_typeahead: any
+  syncfusion_flutter_sliders: any
+  font_awesome_flutter: any
+  flutter_dotenv: any
+  retrofit:
+  google_sign_in: ^6.3.0
+  firebase_auth: ^5.5.4
+  another_flushbar: ^1.12.30
+  animated_bottom_navigation_bar: ^1.4.0
+  connectivity_plus: ^6.1.4
+  flutter_native_splash: ^2.4.6
+  permission_handler: ^11.0.1
+  image_picker: ^1.0.4
+  image: ^4.1.3
+  path_provider: ^2.1.1
+  equatable: ^2.0.5
+  flutter_tts: ^4.2.3
+  syncfusion_flutter_datepicker: ^29.2.10
+  persistent_bottom_nav_bar: ^6.2.1
+  just_audio: ^0.10.4
+
+
+
+
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.png"
+  web:
+    generate: true
+    image_path: "assets/images/logo.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/images/logo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/images/logo.png"
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  build_runner: ^2.4.6
+  injectable_generator: ^2.6.2
+  json_serializable: ^6.6.1
+  lints: ^5.0.0
+  retrofit_generator: ^9.2.0
+
+
+
+flutter:
+
+
+  uses-material-design: true
+  generate: true
+
+
+  fonts:
+    - family: Tajawal
+      fonts:
+        - asset: assets/fonts/Tajawal-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Tajawal-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Tajawal-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Tajawal-Black.ttf
+          weight: 900
+        - asset: assets/fonts/Tajawal-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Tajawal-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Tajawal-ExtraBold.ttf
+          weight: 800
+
+
+
+
+  assets:
+    - assets/
+    - assets/images/
+    - assets/fonts/
