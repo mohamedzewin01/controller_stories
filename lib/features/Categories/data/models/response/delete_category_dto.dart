@@ -1,3 +1,4 @@
+import 'package:controller_stories/features/Categories/domain/entities/delete_categories_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'delete_category_dto.g.dart';
@@ -20,6 +21,12 @@ class DeleteCategoryDto {
 
   Map<String, dynamic> toJson() {
     return _$DeleteCategoryDtoToJson(this);
+  }
+  DeleteCategoryEntity toEntity() {
+    return DeleteCategoryEntity(
+      status: status,
+      message: message,
+    );
   }
 }
 

@@ -1,9 +1,10 @@
+import 'package:controller_stories/features/Categories/domain/entities/fetch_categories_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'fetch_categoires_dto.g.dart';
+part 'fetch_categories_dto.g.dart';
 
 @JsonSerializable()
-class FetchCategoiresDto {
+class FetchCategoriesDto {
   @JsonKey(name: "status")
   final String? status;
   @JsonKey(name: "message")
@@ -13,19 +14,27 @@ class FetchCategoiresDto {
   @JsonKey(name: "categories")
   final List<Categories>? categories;
 
-  FetchCategoiresDto ({
+  FetchCategoriesDto ({
     this.status,
     this.message,
     this.count,
     this.categories,
   });
 
-  factory FetchCategoiresDto.fromJson(Map<String, dynamic> json) {
-    return _$FetchCategoiresDtoFromJson(json);
+  factory FetchCategoriesDto.fromJson(Map<String, dynamic> json) {
+    return _$FetchCategoriesDtoFromJson(json);
   }
 
   Map<String, dynamic> toJson() {
-    return _$FetchCategoiresDtoToJson(this);
+    return _$FetchCategoriesDtoToJson(this);
+  }
+  FetchCategoriesEntity toEntity() {
+    return FetchCategoriesEntity(
+      status: status,
+      message: message,
+      count: count,
+      categories: categories
+    );
   }
 }
 

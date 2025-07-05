@@ -1,3 +1,4 @@
+import 'package:controller_stories/features/Categories/domain/entities/update_categories_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'update_category_dto.g.dart';
@@ -20,6 +21,12 @@ class UpdateCategoryDto {
 
   Map<String, dynamic> toJson() {
     return _$UpdateCategoryDtoToJson(this);
+  }
+  UpdateCategoryEntity toEntity() {
+    return UpdateCategoryEntity(
+      status: status,
+      message: message,
+    );
   }
 }
 

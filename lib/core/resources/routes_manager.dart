@@ -1,3 +1,7 @@
+import 'package:controller_stories/features/Categories/presentation/pages/Categories_page.dart';
+import 'package:controller_stories/features/Clips/presentation/pages/Clips_page.dart';
+import 'package:controller_stories/features/Home/presentation/pages/Home_page.dart';
+import 'package:controller_stories/features/Stories/presentation/pages/Stories_page.dart';
 import 'package:flutter/material.dart';
 
 
@@ -5,22 +9,25 @@ import 'package:flutter/material.dart';
 
 class RoutesManager {
   static const String welcomeScreen = '/';
-  static const String loginPage = '/login';
-  static const String registerPage = '/register';
-  static const String layoutScreen = '/LayoutScreen';
-  static const String chatBotAssistantScreen = '/ChatBotAssistantScreen';
-  static const String chatBotAddChildScreen = '/chatBotAddChildScreen';
-  static const String newChildrenPage = '/addChildrenPage';
-  static const String selectStoriesScreenPage = '/SelectStoriesScreenPage';
-  static const String forgotPasswordScreen = '/forgot-password';
+  static const String categoriesPage = '/CategoriesPage';
+  static const String homePage = '/home';
+  static const String clipsPage = '/clips';
+  static const String storiesPage = '/stories';
+
 }
 
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
     switch (settings.name) {
 
-        // case RoutesManager.selectStoriesScreenPage:
-        // return SlideFromBottomAnimation(const SelectStoriesScreenPage());
+        case RoutesManager.categoriesPage:
+        return SlideFromBottomAnimation(const CategoriesPage());
+        case RoutesManager.homePage:
+        return SlideFromBottomAnimation(const HomePage());
+      case RoutesManager.clipsPage:
+        return SlideFromBottomAnimation(const ClipsPage());
+      case RoutesManager.storiesPage:
+        return SlideFromBottomAnimation(const StoriesPage());
       default:
         return unDefinedRoute();
     }
