@@ -8,4 +8,8 @@ class ApiConstants {
   static const String fetchCategories = "controller/category/fetch_categories";
   static const String updateCategory = "controller/category/update_category";
   static const String deleteCategory = "controller/category/delete_category";
+  ///-
+  static const String addStory = "controller/story/add_story";
+  static const String fetchStoriesByCategory = "controller/story/fetch_stories_by_category";
+  static const String deleteStory = "controller/story/delete_story";
 }

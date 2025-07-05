@@ -144,6 +144,146 @@ class _ApiService implements ApiService {
     return _value;
   }
 
+  @override
+  Future<FetchStoriesByCategoryDto?> fetchStoriesByCategory(
+    FetchStoriesByCategoryRequest fetchStoriesByCategoryRequest,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(fetchStoriesByCategoryRequest.toJson());
+    final _options = _setStreamType<FetchStoriesByCategoryDto>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'controller/story/fetch_stories_by_category',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
+    late FetchStoriesByCategoryDto? _value;
+    try {
+      _value = _result.data == null
+          ? null
+          : FetchStoriesByCategoryDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<DeleteStoryDto?> deleteStory(
+    DeleteStoryRequest deleteStoryRequest,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(deleteStoryRequest.toJson());
+    final _options = _setStreamType<DeleteStoryDto>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'controller/story/delete_story',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
+    late DeleteStoryDto? _value;
+    try {
+      _value = _result.data == null
+          ? null
+          : DeleteStoryDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<AddStoryDto?> addStory(
+    String? title,
+    String? storyDescription,
+    int? problemId,
+    String? gender,
+    String? ageGroup,
+    int? categoryId,
+    int? isActive,
+    File? imageCover,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    if (title != null) {
+      _data.fields.add(MapEntry('story_title', title));
+    }
+    if (storyDescription != null) {
+      _data.fields.add(MapEntry('story_description', storyDescription));
+    }
+    if (problemId != null) {
+      _data.fields.add(MapEntry('problem_id', problemId.toString()));
+    }
+    if (gender != null) {
+      _data.fields.add(MapEntry('gender', gender));
+    }
+    if (ageGroup != null) {
+      _data.fields.add(MapEntry('age_group', ageGroup));
+    }
+    if (categoryId != null) {
+      _data.fields.add(MapEntry('category_id', categoryId.toString()));
+    }
+    if (isActive != null) {
+      _data.fields.add(MapEntry('is_active', isActive.toString()));
+    }
+    if (imageCover != null) {
+      _data.files.add(
+        MapEntry(
+          'image_cover',
+          MultipartFile.fromFileSync(
+            imageCover.path,
+            filename: imageCover.path.split(Platform.pathSeparator).last,
+          ),
+        ),
+      );
+    }
+    final _options = _setStreamType<AddStoryDto>(
+      Options(
+            method: 'POST',
+            headers: _headers,
+            extra: _extra,
+            contentType: 'multipart/form-data',
+          )
+          .compose(
+            _dio.options,
+            'controller/story/add_story',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
+    late AddStoryDto? _value;
+    try {
+      _value = _result.data == null
+          ? null
+          : AddStoryDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

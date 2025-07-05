@@ -7,6 +7,11 @@ import 'package:controller_stories/features/Categories/data/models/response/dele
 import 'package:controller_stories/features/Categories/data/models/response/fetch_categories_dto.dart';
 import 'package:controller_stories/features/Categories/data/models/response/insert_category_dto.dart';
 import 'package:controller_stories/features/Categories/data/models/response/update_category_dto.dart';
+import 'package:controller_stories/features/Stories/data/models/request/delete_story_request.dart';
+import 'package:controller_stories/features/Stories/data/models/request/fetch_stories_by_category_request.dart';
+import 'package:controller_stories/features/Stories/data/models/response/add_story_dto.dart';
+import 'package:controller_stories/features/Stories/data/models/response/delete_story_dto.dart';
+import 'package:controller_stories/features/Stories/data/models/response/fetch_stories_by_category_dto.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
@@ -38,6 +43,29 @@ abstract class ApiService {
   Future<DeleteCategoryDto?> deleteCategory(
     @Body() DeleteCategoryRequest deleteCategoryRequest,
   );
+  @POST(ApiConstants.fetchStoriesByCategory)
+  Future<FetchStoriesByCategoryDto?> fetchStoriesByCategory(
+    @Body() FetchStoriesByCategoryRequest fetchStoriesByCategoryRequest,
+  );
+  @POST(ApiConstants.deleteStory)
+  Future<DeleteStoryDto?> deleteStory(
+    @Body() DeleteStoryRequest deleteStoryRequest,
+  );
+
+
+  @MultiPart()
+  @POST(ApiConstants.addStory)
+  Future<AddStoryDto?> addStory(
+      @Part(name: "story_title") String? title,
+      @Part(name: "story_description") String? storyDescription,
+      @Part(name: "problem_id") int? problemId,
+      @Part(name: "gender") String? gender,
+      @Part(name: "age_group") String? ageGroup,
+      @Part(name: "category_id") int? categoryId,
+      @Part(name: "is_active") int? isActive,
+      @Part(name: "image_cover") File? imageCover,
+
+      );
 }
 
 //  @MultiPart()

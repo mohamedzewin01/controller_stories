@@ -74,15 +74,11 @@ extension GetItInjectableX on _i174.GetIt {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final dioModule = _$DioModule();
     gh.lazySingleton<_i361.Dio>(() => dioModule.providerDio());
-    gh.factory<_i55.StoriesRepository>(() => _i166.StoriesRepositoryImpl());
     gh.factory<_i126.HomeRepository>(() => _i60.HomeRepositoryImpl());
     gh.factory<_i444.ClipsRepository>(() => _i1053.ClipsRepositoryImpl());
     gh.factory<_i680.ApiService>(() => _i680.ApiService(gh<_i361.Dio>()));
     gh.factory<_i827.HomeDatasourceRepo>(
       () => _i97.HomeDatasourceRepoImpl(gh<_i680.ApiService>()),
-    );
-    gh.factory<_i891.StoriesUseCaseRepo>(
-      () => _i809.StoriesUseCase(gh<_i55.StoriesRepository>()),
     );
     gh.factory<_i304.CategoriesDatasourceRepo>(
       () => _i138.CategoriesDatasourceRepoImpl(gh<_i680.ApiService>()),
@@ -92,9 +88,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i543.HomeUseCaseRepo>(
       () => _i557.HomeUseCase(gh<_i126.HomeRepository>()),
-    );
-    gh.factory<_i879.StoriesCubit>(
-      () => _i879.StoriesCubit(gh<_i891.StoriesUseCaseRepo>()),
     );
     gh.factory<_i208.CategoriesRepository>(
       () =>
@@ -115,8 +108,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i92.ClipsCubit>(
       () => _i92.ClipsCubit(gh<_i380.ClipsUseCaseRepo>()),
     );
+    gh.factory<_i55.StoriesRepository>(
+      () => _i166.StoriesRepositoryImpl(gh<_i1073.StoriesDatasourceRepo>()),
+    );
     gh.factory<_i643.CategoriesCubit>(
       () => _i643.CategoriesCubit(gh<_i361.CategoriesUseCaseRepo>()),
+    );
+    gh.factory<_i891.StoriesUseCaseRepo>(
+      () => _i809.StoriesUseCase(gh<_i55.StoriesRepository>()),
+    );
+    gh.factory<_i879.StoriesCubit>(
+      () => _i879.StoriesCubit(gh<_i891.StoriesUseCaseRepo>()),
     );
     return this;
   }
