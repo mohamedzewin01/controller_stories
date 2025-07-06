@@ -22,6 +22,11 @@ final class StoriesAddSuccess extends StoriesState {
   StoriesAddSuccess(this.addStoryEntity);
 }
 
+final class StoriesUpdateSuccess extends StoriesState {
+  final UpdateStoryEntity updateStoryEntity;
+  StoriesUpdateSuccess(this.updateStoryEntity);
+}
+
 final class StoriesDeleteSuccess extends StoriesState {
   final DeleteStoryEntity deleteStoryEntity;
   StoriesDeleteSuccess(this.deleteStoryEntity);
@@ -44,6 +49,12 @@ final class StoriesFilterByAgeResult extends StoriesState {
   final FetchStoriesByCategoryEntity filterResult;
   final String ageGroup;
   StoriesFilterByAgeResult(this.filterResult, this.ageGroup);
+}
+
+final class StoriesFilterByBestFriendResult extends StoriesState {
+  final FetchStoriesByCategoryEntity filterResult;
+  final String bestFriendGender;
+  StoriesFilterByBestFriendResult(this.filterResult, this.bestFriendGender);
 }
 
 // Failure State
