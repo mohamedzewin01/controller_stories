@@ -41,7 +41,7 @@ class LocaleCubit extends Cubit<Locale> {
   static LocaleCubit get(context) => BlocProvider.of(context);
 
   void changeLanguage(String languageCode) async {
-    print('Changing language to: $languageCode'); // للتدبيق
+    print('Changing language to: $languageCode');
 
     final newLocale = Locale(languageCode);
     emit(newLocale);
@@ -50,14 +50,14 @@ class LocaleCubit extends Cubit<Locale> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('language_code', languageCode);
 
-    print('Language saved: $languageCode'); // للتدبيق
+    print('Language saved: $languageCode');
   }
 
   void loadSavedLanguage() async {
     final prefs = await SharedPreferences.getInstance();
-    final savedLanguage = prefs.getString('language_code') ?? 'en';
+    final savedLanguage = prefs.getString('language_code') ?? 'ar';
 
-    print('Loading saved language: $savedLanguage'); // للتدبيق
+    print('Loading saved language: $savedLanguage');
     emit(Locale(savedLanguage));
   }
 }

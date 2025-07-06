@@ -13,4 +13,9 @@ class ApiConstants {
   static const String fetchStoriesByCategory = "controller/story/fetch_stories_by_category";
   static const String deleteStory = "controller/story/delete_story";
   static const String updateStory = "controller/story/update_story";
+  ///-
+  static const String fetchClips = "controller/clips/fetch_clips_by_story.php";
+  static const String addClip = "controller/clips/add_clips_story";
+  static const String deleteClip = "controller/clips/delete_clip";//one clip ya zewin
+
 }

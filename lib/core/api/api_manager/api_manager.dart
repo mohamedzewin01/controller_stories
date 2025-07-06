@@ -7,6 +7,12 @@ import 'package:controller_stories/features/Categories/data/models/response/dele
 import 'package:controller_stories/features/Categories/data/models/response/fetch_categories_dto.dart';
 import 'package:controller_stories/features/Categories/data/models/response/insert_category_dto.dart';
 import 'package:controller_stories/features/Categories/data/models/response/update_category_dto.dart';
+import 'package:controller_stories/features/Clips/data/models/request/clip_model_request.dart';
+import 'package:controller_stories/features/Clips/data/models/request/delete_clip_request.dart';
+import 'package:controller_stories/features/Clips/data/models/request/fetch_clips_request.dart';
+import 'package:controller_stories/features/Clips/data/models/response/add_clips_dto.dart';
+import 'package:controller_stories/features/Clips/data/models/response/delete_clip_dto.dart';
+import 'package:controller_stories/features/Clips/data/models/response/fetch_clips_dto.dart';
 import 'package:controller_stories/features/Stories/data/models/request/delete_story_request.dart';
 import 'package:controller_stories/features/Stories/data/models/request/fetch_stories_by_category_request.dart';
 import 'package:controller_stories/features/Stories/data/models/response/add_story_dto.dart';
@@ -82,6 +88,17 @@ abstract class ApiService {
       @Part(name: "image_cover") File? imageCover,
       @Part(name: "best_friend_gender") String? bestFriendGender,
       );
+
+  @POST(ApiConstants.fetchClips)
+  Future<FetchClipsDto?> fetchClips(
+      @Body() FetchClipsRequest fetchClipsRequest,
+      );
+  @POST(ApiConstants.deleteClip)
+  Future<DeleteClipDto?> deleteClip(
+      @Body() DeleteClipRequest deleteClipRequest,
+      );
+
+
 
 }
 
