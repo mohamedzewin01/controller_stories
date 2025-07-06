@@ -5,7 +5,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/di/di.dart';
-import '../../data/models/request/clip_model_request.dart';
 import '../bloc/Clips_cubit.dart';
 
 class AddClipDialog extends StatefulWidget {
@@ -25,7 +24,7 @@ class AddClipDialog extends StatefulWidget {
 class _AddClipDialogState extends State<AddClipDialog> {
   final _formKey = GlobalKey<FormState>();
   final _clipTextController = TextEditingController();
-  final _pauseAfterNameController = TextEditingController(text: '1000');
+  final _sortOrderController = TextEditingController(text: '1');
 
   File? _selectedImage;
   File? _selectedAudio;
@@ -49,7 +48,7 @@ class _AddClipDialogState extends State<AddClipDialog> {
   @override
   void dispose() {
     _clipTextController.dispose();
-    _pauseAfterNameController.dispose();
+    _sortOrderController.dispose();
     super.dispose();
   }
 
@@ -116,28 +115,16 @@ class _AddClipDialogState extends State<AddClipDialog> {
     });
 
     try {
-      final clipRequest = ClipModelRequest(
+      await _clipsCubit.addClip(
         storyId: widget.storyId,
         clipText: _clipTextController.text.trim(),
-        imageUrl: '', // سيتم ملؤها من السيرفر
-        audioUrl: '', // سيتم ملؤها من السيرفر
-        sortOrder: 1, // يمكن تحديدها حسب الحاجة
-        insertChildName: _insertChildName,
-        pauseAfterName: int.tryParse(_pauseAfterNameController.text) ?? 1000,
-        insertSiblingsName: _insertSiblingsName,
-        insertFriendsName: _insertFriendsName,
-        insertBestPlaymate: _insertBestPlaymate,
-      );
-print(_selectedImage);
-print(_selectedAudio);
-print(widget.storyId);
-print(_insertBestPlaymate);
-print(_insertFriendsName);
-      await _clipsCubit.addClips(
-        clips: [clipRequest],
-        images: [_selectedImage!],
-        audios: [_selectedAudio!],
-        storyId: widget.storyId,
+        sortOrder: _sortOrderController.text,
+        childName: _insertChildName,
+        siblingsName: _insertSiblingsName,
+        friendsName: _insertFriendsName,
+        bestFriendGender: _insertBestPlaymate,
+        image: _selectedImage!,
+        audio: _selectedAudio!,
       );
 
       widget.onClipAdded();
@@ -190,6 +177,8 @@ print(_insertFriendsName);
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildTextSection(),
+                        const SizedBox(height: 24),
+                        _buildSortOrderSection(),
                         const SizedBox(height: 24),
                         _buildMediaSection(),
                         const SizedBox(height: 24),
@@ -281,9 +270,45 @@ print(_insertFriendsName);
             filled: true,
             fillColor: Colors.grey[50],
           ),
+
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSortOrderSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'ترتيب المقطع',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF2D3436),
+          ),
+        ),
+        const SizedBox(height: 12),
+        TextFormField(
+          controller: _sortOrderController,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            hintText: 'أدخل رقم ترتيب المقطع',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Color(0xFF6C5CE7), width: 2),
+            ),
+            filled: true,
+            fillColor: Colors.grey[50],
+            prefixIcon: const Icon(Icons.sort, color: Color(0xFF6C5CE7)),
+          ),
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
-              return 'يرجى إدخال نص المقطع';
+              return 'يرجى إدخال رقم الترتيب';
             }
             return null;
           },
@@ -443,48 +468,6 @@ print(_insertFriendsName);
           value: _insertBestPlaymate,
           onChanged: (value) => setState(() => _insertBestPlaymate = value ?? false),
           icon: Icons.favorite,
-        ),
-
-        const SizedBox(height: 16),
-
-        // مدة التوقف بعد الاسم
-        Row(
-          children: [
-            const Icon(Icons.timer, color: Color(0xFF6C5CE7)),
-            const SizedBox(width: 12),
-            const Text(
-              'التوقف بعد الاسم (مللي ثانية):',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: TextFormField(
-                controller: _pauseAfterNameController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 8,
-                  ),
-                ),
-                validator: (value) {
-                  if (value != null && value.isNotEmpty) {
-                    final intValue = int.tryParse(value);
-                    if (intValue == null || intValue < 0) {
-                      return 'قيمة غير صحيحة';
-                    }
-                  }
-                  return null;
-                },
-              ),
-            ),
-          ],
         ),
       ],
     );

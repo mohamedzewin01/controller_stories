@@ -13,6 +13,20 @@ import 'package:dio/dio.dart' as _i361;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../../features/AudioName/data/datasources/AudioName_datasource_repo.dart'
+    as _i454;
+import '../../features/AudioName/data/datasources/AudioName_datasource_repo_impl.dart'
+    as _i861;
+import '../../features/AudioName/data/repositories_impl/AudioName_repo_impl.dart'
+    as _i486;
+import '../../features/AudioName/domain/repositories/AudioName_repository.dart'
+    as _i337;
+import '../../features/AudioName/domain/useCases/AudioName_useCase_repo.dart'
+    as _i242;
+import '../../features/AudioName/domain/useCases/AudioName_useCase_repo_impl.dart'
+    as _i576;
+import '../../features/AudioName/presentation/bloc/AudioName_cubit.dart'
+    as _i378;
 import '../../features/Categories/data/datasources/Categories_datasource_repo.dart'
     as _i304;
 import '../../features/Categories/data/datasources/Categories_datasource_repo_impl.dart'
@@ -85,8 +99,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1051.ClipsDatasourceRepo>(
       () => _i467.ClipsDatasourceRepoImpl(gh<_i680.ApiService>()),
     );
+    gh.factory<_i337.AudioNameRepository>(
+      () => _i486.AudioNameRepositoryImpl(),
+    );
     gh.factory<_i543.HomeUseCaseRepo>(
       () => _i557.HomeUseCase(gh<_i126.HomeRepository>()),
+    );
+    gh.factory<_i242.AudioNameUseCaseRepo>(
+      () => _i576.AudioNameUseCase(gh<_i337.AudioNameRepository>()),
     );
     gh.factory<_i208.CategoriesRepository>(
       () =>
@@ -97,6 +117,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i371.HomeCubit>(
       () => _i371.HomeCubit(gh<_i543.HomeUseCaseRepo>()),
+    );
+    gh.factory<_i454.AudioNameDatasourceRepo>(
+      () => _i861.AudioNameDatasourceRepoImpl(gh<_i680.ApiService>()),
+    );
+    gh.factory<_i378.AudioNameCubit>(
+      () => _i378.AudioNameCubit(gh<_i242.AudioNameUseCaseRepo>()),
     );
     gh.factory<_i361.CategoriesUseCaseRepo>(
       () => _i151.CategoriesUseCase(gh<_i208.CategoriesRepository>()),

@@ -89,7 +89,7 @@ class _ClipsPageState extends State<ClipsPage> {
       builder: (context) => AddClipDialog(
         storyId: widget.storyId,
         onClipAdded: () {
-          Navigator.pop(context);
+
           _loadClips();
         },
       ),
@@ -103,7 +103,7 @@ class _ClipsPageState extends State<ClipsPage> {
         clip: clip,
         storyId: widget.storyId,
         onClipUpdated: () {
-          Navigator.pop(context);
+
           _loadClips();
         },
       ),

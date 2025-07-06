@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../../core/di/di.dart';
-import '../../data/models/request/clip_model_request.dart';
+import '../../../../core/api/api_constants.dart';
 import '../../data/models/response/fetch_clips_dto.dart';
 import '../bloc/Clips_cubit.dart';
 
@@ -29,7 +29,7 @@ class EditClipDialog extends StatefulWidget {
 class _EditClipDialogState extends State<EditClipDialog> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _clipTextController;
-  late TextEditingController _pauseAfterNameController;
+  late TextEditingController _sortOrderController;
 
   File? _selectedImage;
   File? _selectedAudio;
@@ -53,8 +53,8 @@ class _EditClipDialogState extends State<EditClipDialog> {
 
   void _initializeControllers() {
     _clipTextController = TextEditingController(text: widget.clip.clipText ?? '');
-    _pauseAfterNameController = TextEditingController(
-      text: (widget.clip.pauseAfterName ?? 1000).toString(),
+    _sortOrderController = TextEditingController(
+      text: (widget.clip.sortOrder ?? 1).toString(),
     );
 
     _insertChildName = widget.clip.insertChildName == 'true';
@@ -66,7 +66,7 @@ class _EditClipDialogState extends State<EditClipDialog> {
   @override
   void dispose() {
     _clipTextController.dispose();
-    _pauseAfterNameController.dispose();
+    _sortOrderController.dispose();
     super.dispose();
   }
 
@@ -123,23 +123,16 @@ class _EditClipDialogState extends State<EditClipDialog> {
     });
 
     try {
-      final clipRequest = ClipModelRequest(
-        storyId: widget.storyId,
+      await _clipsCubit.editClip(
+        clipGroupId: widget.clip.clipGroupId ?? 0,
         clipText: _clipTextController.text.trim(),
-        imageUrl: widget.clip.imageUrl ?? '',
-        audioUrl: widget.clip.audioUrl ?? '',
-        sortOrder: widget.clip.sortOrder ?? 1,
-        insertChildName: _insertChildName,
-        pauseAfterName: int.tryParse(_pauseAfterNameController.text) ?? 1000,
-        insertSiblingsName: _insertSiblingsName,
-        insertFriendsName: _insertFriendsName,
-        insertBestPlaymate: _insertBestPlaymate,
-      );
-
-      await _clipsCubit.updateClips(
-        clips: [clipRequest],
-        images: _selectedImage != null ? [_selectedImage] : null,
-        audios: _selectedAudio != null ? [_selectedAudio] : null,
+        sortOrder: int.tryParse(_sortOrderController.text) ?? 1,
+        childName: _insertChildName,
+        siblingsName: _insertSiblingsName,
+        friendsName: _insertFriendsName,
+        bestFriendGender: _insertBestPlaymate,
+        image: _selectedImage,
+        audio: _selectedAudio,
         storyId: widget.storyId,
       );
 
@@ -193,6 +186,8 @@ class _EditClipDialogState extends State<EditClipDialog> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildTextSection(),
+                        const SizedBox(height: 24),
+                        _buildSortOrderSection(),
                         const SizedBox(height: 24),
                         _buildMediaSection(),
                         const SizedBox(height: 24),
@@ -284,9 +279,49 @@ class _EditClipDialogState extends State<EditClipDialog> {
             filled: true,
             fillColor: Colors.grey[50],
           ),
+
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSortOrderSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'ترتيب المقطع',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF2D3436),
+          ),
+        ),
+        const SizedBox(height: 12),
+        TextFormField(
+          controller: _sortOrderController,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            hintText: 'أدخل رقم ترتيب المقطع',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Color(0xFF74B9FF), width: 2),
+            ),
+            filled: true,
+            fillColor: Colors.grey[50],
+            prefixIcon: const Icon(Icons.sort, color: Color(0xFF74B9FF)),
+          ),
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
-              return 'يرجى إدخال نص المقطع';
+              return 'يرجى إدخال رقم الترتيب';
+            }
+            final intValue = int.tryParse(value);
+            if (intValue == null || intValue < 1) {
+              return 'يرجى إدخال رقم صحيح أكبر من 0';
             }
             return null;
           },
@@ -372,7 +407,7 @@ class _EditClipDialogState extends State<EditClipDialog> {
             )
                 : (widget.clip.imageUrl != null && widget.clip.imageUrl!.isNotEmpty)
                 ? CachedNetworkImage(
-              imageUrl: widget.clip.imageUrl!,
+              imageUrl: "${ApiConstants.urlImage}${widget.clip.imageUrl}",
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
                 color: Colors.grey[200],
@@ -517,52 +552,6 @@ class _EditClipDialogState extends State<EditClipDialog> {
           value: _insertBestPlaymate,
           onChanged: (value) => setState(() => _insertBestPlaymate = value ?? false),
           icon: Icons.favorite,
-        ),
-
-        const SizedBox(height: 16),
-
-        // مدة التوقف بعد الاسم
-        Row(
-          children: [
-            const Icon(Icons.timer, color: Color(0xFF74B9FF)),
-            const SizedBox(width: 12),
-            const Text(
-              'التوقف بعد الاسم (مللي ثانية):',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: TextFormField(
-                controller: _pauseAfterNameController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFF74B9FF), width: 2),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 8,
-                  ),
-                ),
-                validator: (value) {
-                  if (value != null && value.isNotEmpty) {
-                    final intValue = int.tryParse(value);
-                    if (intValue == null || intValue < 0) {
-                      return 'قيمة غير صحيحة';
-                    }
-                  }
-                  return null;
-                },
-              ),
-            ),
-          ],
         ),
       ],
     );
