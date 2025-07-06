@@ -5,6 +5,7 @@ import 'package:controller_stories/features/Stories/domain/entities/add_story_en
 import 'package:controller_stories/features/Stories/domain/entities/delete_story_dto.dart';
 
 import 'package:controller_stories/features/Stories/domain/entities/fetch_stories_entity.dart';
+import 'package:controller_stories/features/Stories/domain/entities/update_story.dart';
 
 import '../repositories/Stories_repository.dart';
 import 'package:injectable/injectable.dart';
@@ -33,6 +34,7 @@ class StoriesUseCase implements StoriesUseCaseRepo {
     int? categoryId,
     int? isActive,
     File? imageCover,
+    String? bestFriendGender,
   }) {
     return repository.addStory(
       title,
@@ -43,11 +45,39 @@ class StoriesUseCase implements StoriesUseCaseRepo {
       categoryId,
       isActive,
       imageCover!,
+      bestFriendGender,
     );
   }
 
   @override
   Future<Result<DeleteStoryEntity?>> deleteStory(int storyId) {
-return repository.deleteStory(storyId);
+    return repository.deleteStory(storyId);
+  }
+
+  @override
+  Future<Result<UpdateStoryEntity?>> updateStory({
+    required int storyId,
+    String? title,
+    String? storyDescription,
+    int? problemId,
+    String? gender,
+    String? ageGroup,
+    int? categoryId,
+    int? isActive,
+    File? imageCover,
+    String? bestFriendGender,
+  }) {
+    return repository.updateStory(
+      storyId,
+      title: title,
+      storyDescription: storyDescription,
+      imageCover: imageCover,
+      ageGroup: ageGroup,
+      isActive: isActive,
+      gender: gender,
+      categoryId: categoryId,
+      problemId: problemId,
+      bestFriendGender: bestFriendGender,
+    );
   }
 }

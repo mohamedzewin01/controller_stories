@@ -8,6 +8,7 @@ import 'package:controller_stories/features/Stories/domain/entities/add_story_en
 import 'package:controller_stories/features/Stories/domain/entities/delete_story_dto.dart';
 
 import 'package:controller_stories/features/Stories/domain/entities/fetch_stories_entity.dart';
+import 'package:controller_stories/features/Stories/domain/entities/update_story.dart';
 
 import 'Stories_datasource_repo.dart';
 import 'package:injectable/injectable.dart';
@@ -21,11 +22,10 @@ class StoriesDatasourceRepoImpl implements StoriesDatasourceRepo {
 
   @override
   Future<Result<FetchStoriesByCategoryEntity>> fetchStoriesByCategory(
-    int categoryId,
-  ) {
+      int categoryId,) {
     return executeApi(() async {
       FetchStoriesByCategoryRequest fetchStoriesByCategoryRequest =
-          FetchStoriesByCategoryRequest(categoryId: categoryId);
+      FetchStoriesByCategoryRequest(categoryId: categoryId);
       final response = await apiService.fetchStoriesByCategory(
         fetchStoriesByCategoryRequest,
       );
@@ -34,16 +34,15 @@ class StoriesDatasourceRepoImpl implements StoriesDatasourceRepo {
   }
 
   @override
-  Future<Result<AddStoryEntity?>> addStory(
-    String? title,
-    String? storyDescription,
-    int? problemId,
-    String? gender,
-    String? ageGroup,
-    int? categoryId,
-    int? isActive,
-    File imageCover,
-  ) {
+  Future<Result<AddStoryEntity?>> addStory(String? title,
+      String? storyDescription,
+      int? problemId,
+      String? gender,
+      String? ageGroup,
+      int? categoryId,
+      int? isActive,
+      File imageCover,
+      String? bestFriendGender,) {
     return executeApi(() async {
       final response = await apiService.addStory(
         title,
@@ -54,6 +53,7 @@ class StoriesDatasourceRepoImpl implements StoriesDatasourceRepo {
         categoryId,
         isActive,
         imageCover,
+        bestFriendGender,
       );
       return response!.toEntity();
     });
@@ -64,6 +64,35 @@ class StoriesDatasourceRepoImpl implements StoriesDatasourceRepo {
     return executeApi(() async {
       final response = await apiService.deleteStory(
         DeleteStoryRequest(storyId: storyId),
+      );
+      return response!.toEntity();
+    });
+  }
+
+  @override
+  Future<Result<UpdateStoryEntity?>> updateStory(int storyId, {
+    String? title,
+    String? storyDescription,
+    int? problemId,
+    String? gender,
+    String? ageGroup,
+    int? categoryId,
+    int? isActive,
+    File? imageCover,
+    String? bestFriendGender,
+  }) {
+    return executeApi(() async {
+      final response = await apiService.updateStory(
+        storyId,
+        title,
+        storyDescription,
+        problemId,
+        gender,
+        ageGroup,
+        categoryId,
+        isActive,
+        imageCover,
+        bestFriendGender,
       );
       return response!.toEntity();
     });

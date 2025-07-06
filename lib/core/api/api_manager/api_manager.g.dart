@@ -218,6 +218,7 @@ class _ApiService implements ApiService {
     int? categoryId,
     int? isActive,
     File? imageCover,
+    String? bestFriendGender,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -256,6 +257,9 @@ class _ApiService implements ApiService {
         ),
       );
     }
+    if (bestFriendGender != null) {
+      _data.fields.add(MapEntry('best_friend_gender', bestFriendGender));
+    }
     final _options = _setStreamType<AddStoryDto>(
       Options(
             method: 'POST',
@@ -277,6 +281,88 @@ class _ApiService implements ApiService {
       _value = _result.data == null
           ? null
           : AddStoryDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<UpdateStoryDto?> updateStory(
+    int storyId,
+    String? title,
+    String? storyDescription,
+    int? problemId,
+    String? gender,
+    String? ageGroup,
+    int? categoryId,
+    int? isActive,
+    File? imageCover,
+    String? bestFriendGender,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry('story_id', storyId.toString()));
+    if (title != null) {
+      _data.fields.add(MapEntry('story_title', title));
+    }
+    if (storyDescription != null) {
+      _data.fields.add(MapEntry('story_description', storyDescription));
+    }
+    if (problemId != null) {
+      _data.fields.add(MapEntry('problem_id', problemId.toString()));
+    }
+    if (gender != null) {
+      _data.fields.add(MapEntry('gender', gender));
+    }
+    if (ageGroup != null) {
+      _data.fields.add(MapEntry('age_group', ageGroup));
+    }
+    if (categoryId != null) {
+      _data.fields.add(MapEntry('category_id', categoryId.toString()));
+    }
+    if (isActive != null) {
+      _data.fields.add(MapEntry('is_active', isActive.toString()));
+    }
+    if (imageCover != null) {
+      _data.files.add(
+        MapEntry(
+          'image_cover',
+          MultipartFile.fromFileSync(
+            imageCover.path,
+            filename: imageCover.path.split(Platform.pathSeparator).last,
+          ),
+        ),
+      );
+    }
+    if (bestFriendGender != null) {
+      _data.fields.add(MapEntry('best_friend_gender', bestFriendGender));
+    }
+    final _options = _setStreamType<UpdateStoryDto>(
+      Options(
+            method: 'POST',
+            headers: _headers,
+            extra: _extra,
+            contentType: 'multipart/form-data',
+          )
+          .compose(
+            _dio.options,
+            'controller/story/update_story',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
+    late UpdateStoryDto? _value;
+    try {
+      _value = _result.data == null
+          ? null
+          : UpdateStoryDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

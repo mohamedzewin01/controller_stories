@@ -50,6 +50,7 @@ class StoriesCubit extends Cubit<StoriesState> {
     required int categoryId,
     required bool isActive,
     required File imageCover,
+    required String? bestFriendGender,
   }) async {
     emit(StoriesLoadingAction());
 
@@ -62,6 +63,7 @@ class StoriesCubit extends Cubit<StoriesState> {
       categoryId: categoryId,
       isActive: isActive ? 1 : 0,
       imageCover: imageCover,
+      bestFriendGender: bestFriendGender
     );
 
     switch (result) {

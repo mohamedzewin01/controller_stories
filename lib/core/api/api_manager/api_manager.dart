@@ -12,6 +12,7 @@ import 'package:controller_stories/features/Stories/data/models/request/fetch_st
 import 'package:controller_stories/features/Stories/data/models/response/add_story_dto.dart';
 import 'package:controller_stories/features/Stories/data/models/response/delete_story_dto.dart';
 import 'package:controller_stories/features/Stories/data/models/response/fetch_stories_by_category_dto.dart';
+import 'package:controller_stories/features/Stories/data/models/response/update_story_dto.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
@@ -64,8 +65,24 @@ abstract class ApiService {
       @Part(name: "category_id") int? categoryId,
       @Part(name: "is_active") int? isActive,
       @Part(name: "image_cover") File? imageCover,
-
+      @Part(name: "best_friend_gender") String? bestFriendGender,
       );
+
+  @MultiPart()
+  @POST(ApiConstants.updateStory)
+  Future<UpdateStoryDto?> updateStory(
+      @Part(name: "story_id") int storyId,
+      @Part(name: "story_title") String? title,
+      @Part(name: "story_description") String? storyDescription,
+      @Part(name: "problem_id") int? problemId,
+      @Part(name: "gender") String? gender,
+      @Part(name: "age_group") String? ageGroup,
+      @Part(name: "category_id") int? categoryId,
+      @Part(name: "is_active") int? isActive,
+      @Part(name: "image_cover") File? imageCover,
+      @Part(name: "best_friend_gender") String? bestFriendGender,
+      );
+
 }
 
 //  @MultiPart()

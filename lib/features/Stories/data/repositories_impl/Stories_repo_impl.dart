@@ -5,6 +5,7 @@ import 'package:controller_stories/features/Stories/data/datasources/Stories_dat
 import 'package:controller_stories/features/Stories/domain/entities/add_story_entity.dart';
 import 'package:controller_stories/features/Stories/domain/entities/delete_story_dto.dart';
 import 'package:controller_stories/features/Stories/domain/entities/fetch_stories_entity.dart';
+import 'package:controller_stories/features/Stories/domain/entities/update_story.dart';
 import 'package:injectable/injectable.dart';
 import '../../domain/repositories/Stories_repository.dart';
 
@@ -31,6 +32,7 @@ class StoriesRepositoryImpl implements StoriesRepository {
     int? categoryId,
     int? isActive,
     File imageCover,
+    String? bestFriendGender,
   ) {
     return storiesDatasourceRepo.addStory(
       title,
@@ -41,11 +43,39 @@ class StoriesRepositoryImpl implements StoriesRepository {
       categoryId,
       isActive,
       imageCover,
+      bestFriendGender,
     );
   }
 
   @override
   Future<Result<DeleteStoryEntity?>> deleteStory(int storyId) {
-   return storiesDatasourceRepo.deleteStory(storyId);
+    return storiesDatasourceRepo.deleteStory(storyId);
+  }
+
+  @override
+  Future<Result<UpdateStoryEntity?>> updateStory(
+    int storyId, {
+    String? title,
+    String? storyDescription,
+    int? problemId,
+    String? gender,
+    String? ageGroup,
+    int? categoryId,
+    int? isActive,
+    File? imageCover,
+    String? bestFriendGender,
+  }) {
+    return storiesDatasourceRepo.updateStory(
+      storyId,
+      bestFriendGender: bestFriendGender,
+      problemId: problemId,
+      categoryId: categoryId,
+      gender: gender,
+      isActive: isActive,
+      ageGroup: ageGroup,
+      imageCover: imageCover,
+      storyDescription: storyDescription,
+      title: title,
+    );
   }
 }

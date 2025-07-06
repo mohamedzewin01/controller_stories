@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:controller_stories/core/functions/permission_service.dart';
 import 'package:controller_stories/l10n/app_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../resources/color_manager.dart';
 import '../resources/style_manager.dart';
 
@@ -276,6 +277,37 @@ class CustomDialog {
       },
     );
   }
+
+
+  // Future<bool> isPermissionStorageGranted() async {
+  //   final status = await Permission.photos.request(); // iOS
+  //   final storageStatus = await Permission.storage.request(); // Android
+  //
+  //   if (status.isGranted || storageStatus.isGranted) {
+  //     return true;
+  //   }
+  //
+  //   if (status.isPermanentlyDenied || storageStatus.isPermanentlyDenied) {
+  //     await openAppSettings(); // يفتح إعدادات التطبيق للمستخدم
+  //   }
+  //
+  //   return false;
+  // }
+
+  // Future<bool> isPermissionCameraGranted() async {
+  //   final status = await Permission.camera.request();
+  //
+  //   if (status.isGranted) {
+  //     return true;
+  //   }
+  //
+  //   if (status.isPermanentlyDenied) {
+  //     await openAppSettings();
+  //   }
+  //
+  //   return false;
+  // }
+
   static Future<dynamic> showDialogAddImage(
       BuildContext context, {
         required Function gallery,

@@ -12,4 +12,5 @@ class ApiConstants {
   static const String addStory = "controller/story/add_story";
   static const String fetchStoriesByCategory = "controller/story/fetch_stories_by_category";
   static const String deleteStory = "controller/story/delete_story";
+  static const String updateStory = "controller/story/update_story";
 }

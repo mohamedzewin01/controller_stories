@@ -50,6 +50,8 @@ class Stories {
   final String? storyDescription;
   @JsonKey(name: "gender")
   final String? gender;
+  @JsonKey(name: "best_friend_gender")
+  final String? bestFriendGender;
   @JsonKey(name: "age_group")
   final String? ageGroup;
   @JsonKey(name: "created_at")
@@ -73,6 +75,7 @@ class Stories {
     this.imageCover,
     this.storyDescription,
     this.gender,
+    this.bestFriendGender,
     this.ageGroup,
     this.createdAt,
     this.categoryId,
