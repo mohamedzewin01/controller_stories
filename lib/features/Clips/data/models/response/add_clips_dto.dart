@@ -1,3 +1,4 @@
+import 'package:controller_stories/features/Clips/domain/entities/add_clip_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'add_clips_dto.g.dart';
@@ -20,6 +21,12 @@ class AddClipsDto {
 
   Map<String, dynamic> toJson() {
     return _$AddClipsDtoToJson(this);
+  }
+  AddClipsEntity toEntity() {
+    return AddClipsEntity(
+      status: status,
+      message: message,
+    );
   }
 }
 

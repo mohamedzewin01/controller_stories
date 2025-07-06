@@ -430,6 +430,194 @@ class _ApiService implements ApiService {
     return _value;
   }
 
+  @override
+  Future<AddClipsDto?> addClip(
+    int storyId,
+    String? clipText,
+    String? sortOrder,
+    int? afterName,
+    bool? childName,
+    bool? siblingsName,
+    bool? friendsName,
+    bool? bestFriendGender,
+    File? image,
+    File? audio,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry('story_id', storyId.toString()));
+    if (clipText != null) {
+      _data.fields.add(MapEntry('clip_text', clipText));
+    }
+    if (sortOrder != null) {
+      _data.fields.add(MapEntry('sort_order', sortOrder));
+    }
+    if (afterName != null) {
+      _data.fields.add(MapEntry('pause_after_name', afterName.toString()));
+    }
+    if (childName != null) {
+      _data.fields.add(MapEntry('insert_child_name', childName.toString()));
+    }
+    if (siblingsName != null) {
+      _data.fields.add(
+        MapEntry('insert_siblings_name', siblingsName.toString()),
+      );
+    }
+    if (friendsName != null) {
+      _data.fields.add(MapEntry('insert_friends_name', friendsName.toString()));
+    }
+    if (bestFriendGender != null) {
+      _data.fields.add(
+        MapEntry('insert_best_playmate', bestFriendGender.toString()),
+      );
+    }
+    if (image != null) {
+      _data.files.add(
+        MapEntry(
+          'image',
+          MultipartFile.fromFileSync(
+            image.path,
+            filename: image.path.split(Platform.pathSeparator).last,
+          ),
+        ),
+      );
+    }
+    if (audio != null) {
+      _data.files.add(
+        MapEntry(
+          'audio',
+          MultipartFile.fromFileSync(
+            audio.path,
+            filename: audio.path.split(Platform.pathSeparator).last,
+          ),
+        ),
+      );
+    }
+    final _options = _setStreamType<AddClipsDto>(
+      Options(
+            method: 'POST',
+            headers: _headers,
+            extra: _extra,
+            contentType: 'multipart/form-data',
+          )
+          .compose(
+            _dio.options,
+            'controller/clips/add_clip_story',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
+    late AddClipsDto? _value;
+    try {
+      _value = _result.data == null
+          ? null
+          : AddClipsDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<EditClipDto?> editClip(
+    int clipGroupId,
+    String? clipText,
+    int? afterName,
+    int? sortOrder,
+    bool? childName,
+    bool? siblingsName,
+    bool? friendsName,
+    bool? bestFriendGender,
+    File? image,
+    File? audio,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry('clip_group_id', clipGroupId.toString()));
+    if (clipText != null) {
+      _data.fields.add(MapEntry('clip_text', clipText));
+    }
+    if (afterName != null) {
+      _data.fields.add(MapEntry('pause_after_name', afterName.toString()));
+    }
+    if (sortOrder != null) {
+      _data.fields.add(MapEntry('sort_order', sortOrder.toString()));
+    }
+    if (childName != null) {
+      _data.fields.add(MapEntry('insert_child_name', childName.toString()));
+    }
+    if (siblingsName != null) {
+      _data.fields.add(
+        MapEntry('insert_siblings_name', siblingsName.toString()),
+      );
+    }
+    if (friendsName != null) {
+      _data.fields.add(MapEntry('insert_friends_name', friendsName.toString()));
+    }
+    if (bestFriendGender != null) {
+      _data.fields.add(
+        MapEntry('insert_best_playmate', bestFriendGender.toString()),
+      );
+    }
+    if (image != null) {
+      _data.files.add(
+        MapEntry(
+          'image',
+          MultipartFile.fromFileSync(
+            image.path,
+            filename: image.path.split(Platform.pathSeparator).last,
+          ),
+        ),
+      );
+    }
+    if (audio != null) {
+      _data.files.add(
+        MapEntry(
+          'audio',
+          MultipartFile.fromFileSync(
+            audio.path,
+            filename: audio.path.split(Platform.pathSeparator).last,
+          ),
+        ),
+      );
+    }
+    final _options = _setStreamType<EditClipDto>(
+      Options(
+            method: 'POST',
+            headers: _headers,
+            extra: _extra,
+            contentType: 'multipart/form-data',
+          )
+          .compose(
+            _dio.options,
+            'controller/clips/update_clip_story',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
+    late EditClipDto? _value;
+    try {
+      _value = _result.data == null
+          ? null
+          : EditClipDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

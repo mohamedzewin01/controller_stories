@@ -12,6 +12,7 @@ import 'package:controller_stories/features/Clips/data/models/request/delete_cli
 import 'package:controller_stories/features/Clips/data/models/request/fetch_clips_request.dart';
 import 'package:controller_stories/features/Clips/data/models/response/add_clips_dto.dart';
 import 'package:controller_stories/features/Clips/data/models/response/delete_clip_dto.dart';
+import 'package:controller_stories/features/Clips/data/models/response/edit_clip_dto.dart';
 import 'package:controller_stories/features/Clips/data/models/response/fetch_clips_dto.dart';
 import 'package:controller_stories/features/Stories/data/models/request/delete_story_request.dart';
 import 'package:controller_stories/features/Stories/data/models/request/fetch_stories_by_category_request.dart';
@@ -97,9 +98,36 @@ abstract class ApiService {
   Future<DeleteClipDto?> deleteClip(
       @Body() DeleteClipRequest deleteClipRequest,
       );
+  @MultiPart()
+  @POST(ApiConstants.addClip)
+  Future<AddClipsDto?> addClip(
+      @Part(name: "story_id") int storyId,
+      @Part(name: "clip_text") String? clipText,
+      @Part(name: "sort_order") String? sortOrder,
+      @Part(name: "pause_after_name") int? afterName,
+      @Part(name: "insert_child_name") bool? childName,
+      @Part(name: "insert_siblings_name") bool? siblingsName,
+      @Part(name: "insert_friends_name") bool? friendsName,
+      @Part(name: "insert_best_playmate") bool? bestFriendGender,
+      @Part(name: "image") File? image,
+      @Part(name: "audio") File? audio,
+      );
 
-
+  @MultiPart()
+  @POST(ApiConstants.editClip)
+  Future<EditClipDto?> editClip(
+      @Part(name: "clip_group_id") int clipGroupId,
+      @Part(name: "clip_text") String? clipText,
+      @Part(name: "pause_after_name") int? afterName,
+      @Part(name: "sort_order") int? sortOrder,
+      @Part(name: "insert_child_name") bool? childName,
+      @Part(name: "insert_siblings_name") bool? siblingsName,
+      @Part(name: "insert_friends_name") bool? friendsName,
+      @Part(name: "insert_best_playmate") bool? bestFriendGender,
+      @Part(name: "image") File? image,
+      @Part(name: "audio") File? audio,
+      );
 
 }
 
-//  @MultiPart()
+

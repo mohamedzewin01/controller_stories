@@ -4,7 +4,9 @@ import 'package:controller_stories/core/common/api_result.dart';
 import 'package:controller_stories/features/Clips/data/datasources/Clips_datasource_repo.dart';
 import 'package:controller_stories/features/Clips/data/models/request/clip_model_request.dart';
 import 'package:controller_stories/features/Clips/data/models/response/add_clips_dto.dart';
+import 'package:controller_stories/features/Clips/domain/entities/add_clip_entity.dart';
 import 'package:controller_stories/features/Clips/domain/entities/delete_clip.dart';
+import 'package:controller_stories/features/Clips/domain/entities/edit_clip_entity.dart';
 import 'package:controller_stories/features/Clips/domain/entities/fetch_clips_entity.dart';
 import 'package:injectable/injectable.dart';
 import '../../domain/repositories/Clips_repository.dart';
@@ -26,12 +28,52 @@ class ClipsRepositoryImpl implements ClipsRepository {
   }
 
   @override
-  Future<AddClipsDto?> addClips({required List<ClipModelRequest> clips, required List<File> images, required List<File> audios}) {
- return clipsDatasourceRepo.addClips(clips: clips, images: images, audios: audios);
+  Future<Result<AddClipsEntity?>> addClips({
+    required int storyId,
+    required String? clipText,
+    required String? sortOrder,
+    required bool? childName,
+    required bool? siblingsName,
+    required bool? friendsName,
+    required bool? bestFriendGender,
+    required File? image,
+    required File? audio,
+  }) {
+    return clipsDatasourceRepo.addClips(
+      storyId: storyId,
+      clipText: clipText,
+      sortOrder: sortOrder,
+      childName: childName,
+      siblingsName: siblingsName,
+      friendsName: friendsName,
+      bestFriendGender: bestFriendGender,
+      image: image,
+      audio: audio,
+    );
   }
 
   @override
-  Future<bool> updateClips({required List<ClipModelRequest> clips, List<File?>? images, List<File?>? audios}) {
-    return clipsDatasourceRepo.updateClips(clips: clips, images: images, audios: audios);
+  Future<Result<EditClipEntity?>> editClips({
+    required int clipGroupId,
+    required String? clipText,
+    required int? sortOrder,
+    required bool? childName,
+    required bool? siblingsName,
+    required bool? friendsName,
+    required bool? bestFriendGender,
+    required File? image,
+    required File? audio,
+  }) {
+    return clipsDatasourceRepo.editClips(
+      clipGroupId: clipGroupId,
+      clipText: clipText,
+      sortOrder: sortOrder,
+      childName: childName,
+      siblingsName: siblingsName,
+      friendsName: friendsName,
+      bestFriendGender: bestFriendGender,
+      image: image,
+      audio: audio,
+    );
   }
 }

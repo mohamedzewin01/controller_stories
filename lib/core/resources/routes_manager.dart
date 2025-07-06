@@ -25,8 +25,8 @@ class RouteGenerator {
         return SlideFromBottomAnimation(const CategoriesPage());
         case RoutesManager.homePage:
         return SlideFromBottomAnimation(const HomePage());
-      case RoutesManager.clipsPage:
-        return SlideFromBottomAnimation(const ClipsPage());
+      // case RoutesManager.clipsPage:
+      //   return SlideFromBottomAnimation(const ClipsPage());
       // case RoutesManager.storiesPage:
       //   return SlideFromBottomAnimation(const StoriesPage());
       default:

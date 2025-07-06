@@ -76,7 +76,10 @@ dependencies:
   flutter_tts: ^4.2.3
   syncfusion_flutter_datepicker: ^29.2.10
   persistent_bottom_nav_bar: ^6.2.1
-  just_audio: ^0.10.4
+
+  http_parser: ^4.1.2
+  file_picker: ^10.2.0
+  audioplayers: ^6.5.0
 
 
 

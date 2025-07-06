@@ -1,6 +1,7 @@
 
 
 
+import 'package:controller_stories/features/Clips/presentation/pages/Clips_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:controller_stories/core/resources/color_manager.dart';
@@ -394,7 +395,17 @@ class _StoriesPageState extends State<StoriesPage>
               return StoryCard(
                 story: stories![index],
                 index: index,
-                onTap: () => _showStoryDetails(stories![index]),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ClipsPage(
+                        storyId: stories?[index].storyId??0, // ID الخاص بالقصة
+                        storyTitle:stories?[index].storyTitle??'', // عنوان القصة
+                      ),
+                    ),
+                  );
+                },
                 onEdit: () => _showEditStoryDialog(stories![index]),
                 onDelete: () => _showDeleteConfirmation(stories![index]),
                 onViewDetails: () => _showStoryDetails(stories![index]),
