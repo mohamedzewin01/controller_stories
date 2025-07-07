@@ -109,6 +109,7 @@ abstract class ApiService {
       @Part(name: "insert_siblings_name") bool? siblingsName,
       @Part(name: "insert_friends_name") bool? friendsName,
       @Part(name: "insert_best_playmate") bool? bestFriendGender,
+      @Part(name: "kids_favorite_images") bool? imageFavorite,
       @Part(name: "image") File? image,
       @Part(name: "audio") File? audio,
       );
@@ -124,6 +125,7 @@ abstract class ApiService {
       @Part(name: "insert_siblings_name") bool? siblingsName,
       @Part(name: "insert_friends_name") bool? friendsName,
       @Part(name: "insert_best_playmate") bool? bestFriendGender,
+      @Part(name: "kids_favorite_images") bool? imageFavorite,
       @Part(name: "image") File? image,
       @Part(name: "audio") File? audio,
       );

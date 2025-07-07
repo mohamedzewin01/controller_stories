@@ -19,18 +19,19 @@ abstract class ClipsRepository {
     required bool? siblingsName,
     required bool? friendsName,
     required bool? bestFriendGender,
+    required bool? imageFavorite,
     required File? image,
     required File? audio,
   });
   Future<Result<EditClipEntity?>> editClips({
     required int clipGroupId,
     required String? clipText,
-
     required int? sortOrder,
     required bool? childName,
     required bool? siblingsName,
     required bool? friendsName,
     required bool? bestFriendGender,
+    required bool? imageFavorite,
     required File? image,
     required File? audio,
   });

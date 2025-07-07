@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:controller_stories/core/functions/custom_pick_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -694,36 +695,42 @@ class _StoryFormDialogState extends State<StoryFormDialog>
     );
   }
 
-  Future<void> _pickImage() async {
-    await CustomDialog.showDialogAddImage(
-      context,
-      gallery: () async {
-
-        final picker = ImagePicker();
-        final pickedFile = await picker.pickImage(
-          source: ImageSource.gallery,
-          imageQuality: 85,
-          maxWidth: 1080,
-          maxHeight: 1080,
-        );
-        if (pickedFile != null) {
-          setState(() => _selectedImage = File(pickedFile.path));
-        }
-      },
-      camera: () async {
-
-        final picker = ImagePicker();
-        final pickedFile = await picker.pickImage(
-          source: ImageSource.camera,
-          imageQuality: 85,
-          maxWidth: 1080,
-          maxHeight: 1080,
-        );
-        if (pickedFile != null) {
-          setState(() => _selectedImage = File(pickedFile.path));
-        }
-      },
-    );
+  // Future<void> _pickImage() async {
+  //   await CustomDialog.showDialogAddImage(
+  //     context,
+  //     gallery: () async {
+  //
+  //       final picker = ImagePicker();
+  //       final pickedFile = await picker.pickImage(
+  //         source: ImageSource.gallery,
+  //         imageQuality: 85,
+  //         maxWidth: 1080,
+  //         maxHeight: 1080,
+  //       );
+  //       if (pickedFile != null) {
+  //         setState(() => _selectedImage = File(pickedFile.path));
+  //       }
+  //     },
+  //     camera: () async {
+  //
+  //       final picker = ImagePicker();
+  //       final pickedFile = await picker.pickImage(
+  //         source: ImageSource.camera,
+  //         imageQuality: 85,
+  //         maxWidth: 1080,
+  //         maxHeight: 1080,
+  //       );
+  //       if (pickedFile != null) {
+  //         setState(() => _selectedImage = File(pickedFile.path));
+  //       }
+  //     },
+  //   );
+  // }
+ Future<void> _pickImage() async {
+   final image = await pickImageDialog(context);
+   if (image != null) {
+     setState(() => _selectedImage = image);
+   }
   }
 
   void _handleSave() async {

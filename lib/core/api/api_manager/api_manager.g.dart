@@ -381,7 +381,7 @@ class _ApiService implements ApiService {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'controller/clips/fetch_clips_by_story.php',
+            'controller/clips/fetch_clips_by_story',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -440,6 +440,7 @@ class _ApiService implements ApiService {
     bool? siblingsName,
     bool? friendsName,
     bool? bestFriendGender,
+    bool? imageFavorite,
     File? image,
     File? audio,
   ) async {
@@ -472,6 +473,11 @@ class _ApiService implements ApiService {
     if (bestFriendGender != null) {
       _data.fields.add(
         MapEntry('insert_best_playmate', bestFriendGender.toString()),
+      );
+    }
+    if (imageFavorite != null) {
+      _data.fields.add(
+        MapEntry('kids_favorite_images', imageFavorite.toString()),
       );
     }
     if (image != null) {
@@ -534,6 +540,7 @@ class _ApiService implements ApiService {
     bool? siblingsName,
     bool? friendsName,
     bool? bestFriendGender,
+    bool? imageFavorite,
     File? image,
     File? audio,
   ) async {
@@ -566,6 +573,11 @@ class _ApiService implements ApiService {
     if (bestFriendGender != null) {
       _data.fields.add(
         MapEntry('insert_best_playmate', bestFriendGender.toString()),
+      );
+    }
+    if (imageFavorite != null) {
+      _data.fields.add(
+        MapEntry('kids_favorite_images', imageFavorite.toString()),
       );
     }
     if (image != null) {

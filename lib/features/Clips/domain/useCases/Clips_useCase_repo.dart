@@ -18,6 +18,7 @@ abstract class ClipsUseCaseRepo {
     required bool? siblingsName,
     required bool? friendsName,
     required bool? bestFriendGender,
+    required bool? imageFavorite,
     required File? image,
     required File? audio,
   });
@@ -30,6 +31,7 @@ abstract class ClipsUseCaseRepo {
     required bool? siblingsName,
     required bool? friendsName,
     required bool? bestFriendGender,
+    required bool? imageFavorite,
     required File? image,
     required File? audio,
   });

@@ -38,6 +38,7 @@ class ClipsUseCase implements ClipsUseCaseRepo {
     required bool? siblingsName,
     required bool? friendsName,
     required bool? bestFriendGender,
+    required bool? imageFavorite,
     required File? image,
     required File? audio,
   }) {
@@ -49,6 +50,7 @@ class ClipsUseCase implements ClipsUseCaseRepo {
       siblingsName: siblingsName,
       friendsName: friendsName,
       bestFriendGender: bestFriendGender,
+      imageFavorite: imageFavorite,
       image: image,
       audio: audio,
     );
@@ -64,6 +66,7 @@ class ClipsUseCase implements ClipsUseCaseRepo {
     required bool? siblingsName,
     required bool? friendsName,
     required bool? bestFriendGender,
+    required bool? imageFavorite,
     required File? image,
     required File? audio,
   }) {
@@ -75,6 +78,7 @@ class ClipsUseCase implements ClipsUseCaseRepo {
       siblingsName: siblingsName,
       friendsName: friendsName,
       bestFriendGender: bestFriendGender,
+      imageFavorite: imageFavorite,
       image: image,
       audio: audio,
     );

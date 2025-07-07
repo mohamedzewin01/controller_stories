@@ -337,7 +337,7 @@ class CustomDialog {
                 onTap: () async {
                   var permission = await isPermissionStorageGranted();
                   if (permission == false) return;
-                  gallery();
+                 await gallery();
                   if (context.mounted) Navigator.pop(context);
                 },
               ),
@@ -347,7 +347,7 @@ class CustomDialog {
                 onTap: () async {
                   var permission = await isPermissionCameraGranted();
                   if (permission == false) return;
-                  camera();
+                  await camera();
                   if (context.mounted) Navigator.pop(context);
                 },
               ),

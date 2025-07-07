@@ -14,11 +14,20 @@ class ApiConstants {
   static const String deleteStory = "controller/story/delete_story";
   static const String updateStory = "controller/story/update_story";
   ///-
-  static const String fetchClips = "controller/clips/fetch_clips_by_story.php";
+  static const String fetchClips = "controller/clips/fetch_clips_by_story";
   static const String addClip = "controller/clips/add_clip_story";
   static const String deleteClip = "controller/clips/delete_clip";
   static const String editClip = "controller/clips/update_clip_story";
   ///-
-
-
+  static const String deleteChildName = "controller/audio_name/delete_child_name";
+  static const String updateChildName = "controller/audio_name/update_child_name";
+  static const String addAudioNameSearch = "controller/audio_name/search";
+  static const String nameAudioEmpty = "controller/audio_name/name_null";
+  static const String fetchNamesAudio = "controller/audio_name/fetch_names_audio";
+  ///-
+  static const String addProblem = "controller/problems/add_problem";
+  static const String getProblems = "controller/problems/get_problems";
+  static const String deleteProblem = "controller/problems/delete_problem";
+  static const String updateProblem = "controller/problems/update_problem";
+  ///-
 }

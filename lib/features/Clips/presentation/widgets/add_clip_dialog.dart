@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:controller_stories/core/functions/custom_pick_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
@@ -33,6 +34,7 @@ class _AddClipDialogState extends State<AddClipDialog> {
   bool _insertSiblingsName = false;
   bool _insertFriendsName = false;
   bool _insertBestPlaymate = false;
+  bool _insertImageFavorite = false;
 
   final ImagePicker _imagePicker = ImagePicker();
   late ClipsCubit _clipsCubit;
@@ -52,41 +54,21 @@ class _AddClipDialogState extends State<AddClipDialog> {
     super.dispose();
   }
 
-  Future<void> _pickImage() async {
-    try {
-      final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 1920,
-        maxHeight: 1080,
-        imageQuality: 85,
-      );
 
-      if (image != null) {
-        setState(() {
-          _selectedImage = File(image.path);
-        });
-      }
-    } catch (e) {
-      _showErrorSnackBar('خطأ في اختيار الصورة: $e');
+  Future<void> _pickImage() async {
+    final image = await pickImageDialog(context);
+    if (image != null) {
+      setState(() => _selectedImage = image);
     }
   }
 
   Future<void> _pickAudio() async {
-    try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.audio,
-        allowMultiple: false,
-      );
-
-      if (result != null && result.files.single.path != null) {
-        setState(() {
-          _selectedAudio = File(result.files.single.path!);
-        });
-      }
-    } catch (e) {
-      _showErrorSnackBar('خطأ في اختيار الملف الصوتي: $e');
+    final audio = await pickAudioFile();
+    if (audio != null) {
+      setState(() => _selectedAudio = audio);
     }
   }
+
 
   void _showErrorSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -123,6 +105,7 @@ class _AddClipDialogState extends State<AddClipDialog> {
         siblingsName: _insertSiblingsName,
         friendsName: _insertFriendsName,
         bestFriendGender: _insertBestPlaymate,
+        imageFavorite: _insertImageFavorite,
         image: _selectedImage!,
         audio: _selectedAudio!,
       );
@@ -468,6 +451,12 @@ class _AddClipDialogState extends State<AddClipDialog> {
           value: _insertBestPlaymate,
           onChanged: (value) => setState(() => _insertBestPlaymate = value ?? false),
           icon: Icons.favorite,
+        ),
+        _buildCheckboxTile(
+          title: 'إدراج الصورة المفضلة',
+          value: _insertImageFavorite,
+          onChanged: (value) => setState(() => _insertImageFavorite = value ?? false),
+          icon: Icons.image_rounded,
         ),
       ],
     );

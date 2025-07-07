@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:controller_stories/core/functions/custom_pick_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
@@ -38,6 +39,7 @@ class _EditClipDialogState extends State<EditClipDialog> {
   late bool _insertSiblingsName;
   late bool _insertFriendsName;
   late bool _insertBestPlaymate;
+  late bool _insertFavoriteImage;
 
   final ImagePicker _imagePicker = ImagePicker();
   late ClipsCubit _clipsCubit;
@@ -61,6 +63,7 @@ class _EditClipDialogState extends State<EditClipDialog> {
     _insertSiblingsName = widget.clip.insertSiblingsName == 'true';
     _insertFriendsName = widget.clip.insertFriendsName == 'true';
     _insertBestPlaymate = widget.clip.insertBestPlaymate == 'true';
+    _insertFavoriteImage = widget.clip.kidsFavoriteImages == 'true';
   }
 
   @override
@@ -71,38 +74,16 @@ class _EditClipDialogState extends State<EditClipDialog> {
   }
 
   Future<void> _pickImage() async {
-    try {
-      final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 1920,
-        maxHeight: 1080,
-        imageQuality: 85,
-      );
-
-      if (image != null) {
-        setState(() {
-          _selectedImage = File(image.path);
-        });
-      }
-    } catch (e) {
-      _showErrorSnackBar('خطأ في اختيار الصورة: $e');
+    final image = await pickImageDialog(context);
+    if (image != null) {
+      setState(() => _selectedImage = image);
     }
   }
 
   Future<void> _pickAudio() async {
-    try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.audio,
-        allowMultiple: false,
-      );
-
-      if (result != null && result.files.single.path != null) {
-        setState(() {
-          _selectedAudio = File(result.files.single.path!);
-        });
-      }
-    } catch (e) {
-      _showErrorSnackBar('خطأ في اختيار الملف الصوتي: $e');
+    final audio = await pickAudioFile();
+    if (audio != null) {
+      setState(() => _selectedAudio = audio);
     }
   }
 
@@ -131,6 +112,7 @@ class _EditClipDialogState extends State<EditClipDialog> {
         siblingsName: _insertSiblingsName,
         friendsName: _insertFriendsName,
         bestFriendGender: _insertBestPlaymate,
+        imageFavorite: _insertFavoriteImage,
         image: _selectedImage,
         audio: _selectedAudio,
         storyId: widget.storyId,
@@ -552,6 +534,12 @@ class _EditClipDialogState extends State<EditClipDialog> {
           value: _insertBestPlaymate,
           onChanged: (value) => setState(() => _insertBestPlaymate = value ?? false),
           icon: Icons.favorite,
+        ),
+        _buildCheckboxTile(
+          title: 'إدراج الصورة المفضلة',
+          value: _insertFavoriteImage,
+          onChanged: (value) => setState(() => _insertFavoriteImage = value ?? false),
+          icon: Icons.image_sharp,
         ),
       ],
     );

@@ -70,6 +70,7 @@ class ClipsCubit extends Cubit<ClipsState> {
     required bool siblingsName,
     required bool friendsName,
     required bool bestFriendGender,
+    required bool? imageFavorite,
     required File image,
     required File audio,
   }) async {
@@ -82,6 +83,7 @@ class ClipsCubit extends Cubit<ClipsState> {
       siblingsName: siblingsName,
       friendsName: friendsName,
       bestFriendGender: bestFriendGender,
+      imageFavorite: imageFavorite,
       image: image,
       audio: audio,
     );
@@ -111,6 +113,7 @@ class ClipsCubit extends Cubit<ClipsState> {
     required bool siblingsName,
     required bool friendsName,
     required bool bestFriendGender,
+    required bool? imageFavorite,
     File? image,
     File? audio,
     required int storyId,
@@ -124,6 +127,7 @@ class ClipsCubit extends Cubit<ClipsState> {
       siblingsName: siblingsName,
       friendsName: friendsName,
       bestFriendGender: bestFriendGender,
+      imageFavorite: imageFavorite,
       image: image,
       audio: audio,
     );

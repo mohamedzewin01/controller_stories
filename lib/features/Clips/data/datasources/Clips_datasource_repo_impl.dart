@@ -44,8 +44,6 @@ class ClipsDatasourceRepoImpl implements ClipsDatasourceRepo {
     });
   }
 
-
-
   @override
   Future<Result<AddClipsEntity?>> addClips({
     required int storyId,
@@ -56,6 +54,7 @@ class ClipsDatasourceRepoImpl implements ClipsDatasourceRepo {
     required bool? siblingsName,
     required bool? friendsName,
     required bool? bestFriendGender,
+    required bool? imageFavorite,
     required File? image,
     required File? audio,
   }) {
@@ -69,6 +68,7 @@ class ClipsDatasourceRepoImpl implements ClipsDatasourceRepo {
         siblingsName,
         friendsName,
         bestFriendGender,
+        imageFavorite,
         image,
         audio,
       );
@@ -77,22 +77,33 @@ class ClipsDatasourceRepoImpl implements ClipsDatasourceRepo {
   }
 
   @override
-  Future<Result<EditClipEntity?>> editClips({required int clipGroupId, required String? clipText,  required int? sortOrder, required bool? childName, required bool? siblingsName, required bool? friendsName, required bool? bestFriendGender, required File? image, required File? audio}) {
-   return executeApi(() async {
-     var response = await apiService.editClip(
-       clipGroupId,
-       clipText,
-       1000,
-       sortOrder,
-         childName,
-       siblingsName,
-       friendsName,
-       bestFriendGender,
-       image,
-         audio,
-     );
-     return response?.toEntity();
-   }
-   );
+  Future<Result<EditClipEntity?>> editClips({
+    required int clipGroupId,
+    required String? clipText,
+    required int? sortOrder,
+    required bool? childName,
+    required bool? siblingsName,
+    required bool? friendsName,
+    required bool? bestFriendGender,
+    required bool? imageFavorite,
+    required File? image,
+    required File? audio,
+  }) {
+    return executeApi(() async {
+      var response = await apiService.editClip(
+        clipGroupId,
+        clipText,
+        1000,
+        sortOrder,
+        childName,
+        siblingsName,
+        friendsName,
+        bestFriendGender,
+        imageFavorite,
+        image,
+        audio,
+      );
+      return response?.toEntity();
+    });
   }
 }

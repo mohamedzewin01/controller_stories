@@ -19,6 +19,7 @@ abstract class ClipsDatasourceRepo {
     required bool? siblingsName,
     required bool? friendsName,
     required bool? bestFriendGender,
+    required bool? imageFavorite,
     required File? image,
     required File? audio,
   });
@@ -31,6 +32,7 @@ abstract class ClipsDatasourceRepo {
     required bool? siblingsName,
     required bool? friendsName,
     required bool? bestFriendGender,
+    required bool? imageFavorite,
     required File? image,
     required File? audio,
   });

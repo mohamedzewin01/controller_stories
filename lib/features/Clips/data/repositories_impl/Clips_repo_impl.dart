@@ -36,6 +36,7 @@ class ClipsRepositoryImpl implements ClipsRepository {
     required bool? siblingsName,
     required bool? friendsName,
     required bool? bestFriendGender,
+    required bool? imageFavorite,
     required File? image,
     required File? audio,
   }) {
@@ -47,6 +48,7 @@ class ClipsRepositoryImpl implements ClipsRepository {
       siblingsName: siblingsName,
       friendsName: friendsName,
       bestFriendGender: bestFriendGender,
+      imageFavorite:imageFavorite ,
       image: image,
       audio: audio,
     );
@@ -61,6 +63,7 @@ class ClipsRepositoryImpl implements ClipsRepository {
     required bool? siblingsName,
     required bool? friendsName,
     required bool? bestFriendGender,
+    required bool? imageFavorite,
     required File? image,
     required File? audio,
   }) {
@@ -72,6 +75,7 @@ class ClipsRepositoryImpl implements ClipsRepository {
       siblingsName: siblingsName,
       friendsName: friendsName,
       bestFriendGender: bestFriendGender,
+      imageFavorite:imageFavorite ,
       image: image,
       audio: audio,
     );
