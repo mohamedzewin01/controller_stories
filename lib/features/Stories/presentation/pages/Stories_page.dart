@@ -1,6 +1,4 @@
 
-
-
 import 'package:controller_stories/features/Clips/presentation/pages/Clips_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -103,14 +101,15 @@ class _StoriesPageState extends State<StoriesPage>
             _buildAppBar(),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 16),
                 child: BlocConsumer<StoriesCubit, StoriesState>(
                   listener: _handleStateChanges,
                   builder: _buildContent,
                 ),
               ),
             ),
-            SliverPadding(padding: EdgeInsetsGeometry.only(bottom: 150))
+            SliverPadding(padding: EdgeInsets.only(bottom: 150))
           ],
         ),
 
@@ -188,7 +187,6 @@ class _StoriesPageState extends State<StoriesPage>
     );
   }
 
-
   Widget _buildFloatingActionButtons() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -227,7 +225,30 @@ class _StoriesPageState extends State<StoriesPage>
       ],
     );
   }
-
+  void _showAddStoryDialog() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => StoryFormDialog(
+        categoryId: widget.categoryId,
+        onSave: (title, description, problemId, gender, ageGroup, imageCover, bestFriendGender) async {
+          Navigator.pop(context);
+          await viewModel.addStory(
+            title: title,
+            storyDescription: description,
+            problemId: problemId,
+            gender: gender,
+            ageGroup: ageGroup,
+            categoryId: widget.categoryId,
+            isActive: true,
+            imageCover: imageCover,
+            bestFriendGender: bestFriendGender,
+          );
+        },
+      ),
+    );
+  }
   void _handleStateChanges(BuildContext context, StoriesState state) {
     print('BlocConsumer listener - State: ${state.runtimeType}');
 
@@ -287,7 +308,53 @@ class _StoriesPageState extends State<StoriesPage>
     // Default state
     return _buildEmptyState();
   }
-
+  Widget _buildEmptyState() {
+    return Container(
+      padding: const EdgeInsets.all(40),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: ColorManager.primaryColor.withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.auto_stories_outlined,
+              size: 64,
+              color: ColorManager.primaryColor,
+            ),
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'لا توجد قصص في هذه الفئة بعد',
+            style: getBoldStyle(color: ColorManager.titleColor, fontSize: 20),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'ابدأ بإضافة قصة جديدة لإثراء المحتوى',
+            style: getRegularStyle(color: Colors.grey[600], fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 32),
+          ElevatedButton.icon(
+            onPressed: () => _showAddStoryDialog(),
+            icon: const Icon(Icons.add_rounded),
+            label: const Text('إضافة قصة جديدة'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorManager.primaryColor,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
   Widget _buildLoadingState() {
     return Column(
       children: List.generate(4, (index) => _buildLoadingShimmer()),
@@ -396,19 +463,26 @@ class _StoriesPageState extends State<StoriesPage>
                 story: stories![index],
                 index: index,
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ClipsPage(
-                        storyId: stories?[index].storyId??0, // ID الخاص بالقصة
-                        storyTitle:stories?[index].storyTitle??'', // عنوان القصة
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ClipsPage(
+                              storyId: stories?[index].storyId ?? 0,
+                              storyTitle: stories?[index].storyTitle ?? '',
+                            ),
                       ),
-                    ),
-                  );
+                    );
+
                 },
                 onEdit: () => _showEditStoryDialog(stories![index]),
                 onDelete: () => _showDeleteConfirmation(stories![index]),
                 onViewDetails: () => _showStoryDetails(stories![index]),
+                onActiveToggle: (bool isActive) =>
+                    _toggleStoryActive(
+                      stories![index],
+                      isActive,
+                    ),
               );
             },
           ),
@@ -417,54 +491,96 @@ class _StoriesPageState extends State<StoriesPage>
     );
   }
 
-  Widget _buildEmptyState() {
-    return Container(
-      padding: const EdgeInsets.all(40),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: ColorManager.primaryColor.withOpacity(0.1),
-              shape: BoxShape.circle,
+  // Toggle story active status
+  void _toggleStoryActive(Stories story, bool isActive) {
+    showDialog(
+      context: context,
+      builder: (context) =>
+          AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16)),
+            title: Row(
+              children: [
+                Icon(
+                  isActive ? Icons.visibility_rounded : Icons
+                      .visibility_off_rounded,
+                  color: isActive ? Colors.green[600] : Colors.orange[600],
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  isActive ? 'تفعيل النشر' : 'إلغاء تفعيل النشر',
+                  style: getBoldStyle(
+                      color: ColorManager.titleColor, fontSize: 18),
+                ),
+              ],
             ),
-            child: Icon(
-              Icons.auto_stories_outlined,
-              size: 64,
-              color: ColorManager.primaryColor,
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  isActive
+                      ? 'هل تريد تفعيل نشر قصة "${story.storyTitle}"؟'
+                      : 'هل تريد إلغاء تفعيل نشر قصة "${story.storyTitle}"؟',
+                  style: getRegularStyle(color: Colors.grey[600], fontSize: 14),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: (isActive ? Colors.green : Colors.orange)
+                        .withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.info_outline,
+                        color: isActive ? Colors.green[600] : Colors
+                            .orange[600],
+                        size: 16,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          isActive
+                              ? 'ستصبح القصة مرئية للمستخدمين ويمكن الوصول إليها'
+                              : 'ستصبح القصة مخفية عن المستخدمين ولن يمكن الوصول إليها',
+                          style: getRegularStyle(
+                            color: isActive ? Colors.green[600] : Colors
+                                .orange[600],
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 24),
-          Text(
-            'لا توجد قصص في هذه الفئة بعد',
-            style: getBoldStyle(color: ColorManager.titleColor, fontSize: 20),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'ابدأ بإضافة قصة جديدة لإثراء المحتوى',
-            style: getRegularStyle(color: Colors.grey[600], fontSize: 14),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 32),
-          ElevatedButton.icon(
-            onPressed: () => _showAddStoryDialog(),
-            icon: const Icon(Icons.add_rounded),
-            label: const Text('إضافة قصة جديدة'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: ColorManager.primaryColor,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('إلغاء'),
               ),
-            ),
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  await viewModel.updateStory(
+                    storyId: story.storyId!,
+                    isActive: isActive,
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: isActive ? Colors.green : Colors.orange,
+                  foregroundColor: Colors.white,
+                ),
+                child: Text(isActive ? 'تفعيل' : 'إلغاء تفعيل'),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
-
   Widget _buildErrorState() {
     return Container(
       padding: const EdgeInsets.all(40),
@@ -498,30 +614,7 @@ class _StoriesPageState extends State<StoriesPage>
   }
 
   // Dialog Methods
-  void _showAddStoryDialog() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => StoryFormDialog(
-        categoryId: widget.categoryId,
-        onSave: (title, description, problemId, gender, ageGroup, imageCover, bestFriendGender) async {
-          Navigator.pop(context);
-          await viewModel.addStory(
-            title: title,
-            storyDescription: description,
-            problemId: problemId,
-            gender: gender,
-            ageGroup: ageGroup,
-            categoryId: widget.categoryId,
-            isActive: true,
-            imageCover: imageCover,
-            bestFriendGender: bestFriendGender,
-          );
-        },
-      ),
-    );
-  }
+
 
   void _showEditStoryDialog(Stories story) {
     showModalBottomSheet(

@@ -63,6 +63,19 @@ import '../../features/Home/domain/useCases/Home_useCase_repo.dart' as _i543;
 import '../../features/Home/domain/useCases/Home_useCase_repo_impl.dart'
     as _i557;
 import '../../features/Home/presentation/bloc/Home_cubit.dart' as _i371;
+import '../../features/Problems/data/datasources/Problems_datasource_repo.dart'
+    as _i1027;
+import '../../features/Problems/data/datasources/Problems_datasource_repo_impl.dart'
+    as _i663;
+import '../../features/Problems/data/repositories_impl/Problems_repo_impl.dart'
+    as _i507;
+import '../../features/Problems/domain/repositories/Problems_repository.dart'
+    as _i854;
+import '../../features/Problems/domain/useCases/Problems_useCase_repo.dart'
+    as _i741;
+import '../../features/Problems/domain/useCases/Problems_useCase_repo_impl.dart'
+    as _i29;
+import '../../features/Problems/presentation/bloc/Problems_cubit.dart' as _i508;
 import '../../features/Stories/data/datasources/Stories_datasource_repo.dart'
     as _i1073;
 import '../../features/Stories/data/datasources/Stories_datasource_repo_impl.dart'
@@ -127,8 +140,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i361.CategoriesUseCaseRepo>(
       () => _i151.CategoriesUseCase(gh<_i208.CategoriesRepository>()),
     );
+    gh.factory<_i1027.ProblemsDatasourceRepo>(
+      () => _i663.ProblemsDatasourceRepoImpl(gh<_i680.ApiService>()),
+    );
     gh.factory<_i444.ClipsRepository>(
       () => _i1053.ClipsRepositoryImpl(gh<_i1051.ClipsDatasourceRepo>()),
+    );
+    gh.factory<_i854.ProblemsRepository>(
+      () => _i507.ProblemsRepositoryImpl(gh<_i1027.ProblemsDatasourceRepo>()),
     );
     gh.factory<_i55.StoriesRepository>(
       () => _i166.StoriesRepositoryImpl(gh<_i1073.StoriesDatasourceRepo>()),
@@ -142,11 +161,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i891.StoriesUseCaseRepo>(
       () => _i809.StoriesUseCase(gh<_i55.StoriesRepository>()),
     );
+    gh.factory<_i741.ProblemsUseCaseRepo>(
+      () => _i29.ProblemsUseCase(gh<_i854.ProblemsRepository>()),
+    );
     gh.factory<_i92.ClipsCubit>(
       () => _i92.ClipsCubit(gh<_i380.ClipsUseCaseRepo>()),
     );
     gh.factory<_i879.StoriesCubit>(
       () => _i879.StoriesCubit(gh<_i891.StoriesUseCaseRepo>()),
+    );
+    gh.factory<_i508.ProblemsCubit>(
+      () => _i508.ProblemsCubit(gh<_i741.ProblemsUseCaseRepo>()),
     );
     return this;
   }
