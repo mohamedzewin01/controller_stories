@@ -538,7 +538,7 @@ class _EditClipDialogState extends State<EditClipDialog> {
         _buildCheckboxTile(
           title: 'إدراج الصورة المفضلة',
           value: _insertFavoriteImage,
-          onChanged: (value) => setState(() => _insertFavoriteImage = value ?? false),
+          onChanged: (value) => setState(() => _insertFavoriteImage = value! ),
           icon: Icons.image_sharp,
         ),
       ],
