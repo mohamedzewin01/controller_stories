@@ -13,6 +13,7 @@ abstract class ProblemsRepository {
   );
 
   Future<Result<UpdateProblemEntity?>> editProblem(
+      int? problemId,
     String? problemTitle,
     String? problemDescription,
   );

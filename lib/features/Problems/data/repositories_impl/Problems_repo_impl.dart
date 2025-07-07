@@ -24,8 +24,8 @@ class ProblemsRepositoryImpl implements ProblemsRepository {
   }
 
   @override
-  Future<Result<UpdateProblemEntity?>> editProblem(String? problemTitle, String? problemDescription) {
-   return _problemsDatasourceRepo.editProblem(problemTitle, problemDescription);
+  Future<Result<UpdateProblemEntity?>> editProblem(int? problemId,String? problemTitle, String? problemDescription) {
+   return _problemsDatasourceRepo.editProblem(problemId,problemTitle, problemDescription);
   }
 
   @override

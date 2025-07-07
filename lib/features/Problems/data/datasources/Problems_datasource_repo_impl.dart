@@ -42,11 +42,13 @@ class ProblemsDatasourceRepoImpl implements ProblemsDatasourceRepo {
 
   @override
   Future<Result<UpdateProblemEntity?>> editProblem(
+      int? problemId,
     String? problemTitle,
     String? problemDescription,
   ) {
     return executeApi(() async {
       UpdateProblemRequest updateProblemRequest = UpdateProblemRequest(
+        problemId:problemId ,
         problemDescription: problemDescription,
         problemTitle: problemTitle,
       );

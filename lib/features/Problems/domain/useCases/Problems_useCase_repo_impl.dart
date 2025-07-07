@@ -33,10 +33,11 @@ class ProblemsUseCase implements ProblemsUseCaseRepo {
 
   @override
   Future<Result<UpdateProblemEntity?>> editProblem(
+      int? problemId,
     String? problemTitle,
     String? problemDescription,
   ) {
-    return repository.editProblem(problemTitle, problemDescription);
+    return repository.editProblem( problemId,problemTitle, problemDescription);
   }
 
   @override

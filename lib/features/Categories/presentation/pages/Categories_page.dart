@@ -1,3 +1,4 @@
+import 'package:controller_stories/features/Problems/presentation/pages/Problems_page.dart';
 import 'package:controller_stories/features/Stories/presentation/pages/Stories_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -741,7 +742,8 @@ class _CategoriesPageState extends State<CategoriesPage>
   void _showSearchDialog() {
     showDialog(
       context: context,
-      builder: (context) => SearchDialog(),
+      builder: (context) => ProblemsPage()
+          // SearchDialog(),
     );
   }
 

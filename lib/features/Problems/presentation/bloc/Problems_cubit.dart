@@ -36,12 +36,15 @@ class ProblemsCubit extends Cubit<ProblemsState> {
   }
 
   Future<void> editProblem({
+    required  int problemId,
     required String problemTitle,
     required String problemDescription,
   }) async {
     emit(EditProblemsLoading());
 
     final result = await _problemsUseCaseRepo.editProblem(
+     problemId,
+
       problemTitle,
       problemDescription,
     );
