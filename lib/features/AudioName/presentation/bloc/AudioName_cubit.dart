@@ -1,3 +1,4 @@
+// lib/features/AudioName/presentation/bloc/AudioName_cubit.dart
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -17,6 +18,27 @@ class AudioNameCubit extends Cubit<AudioNameState> {
 
   static AudioNameCubit get(context) => BlocProvider.of(context);
 
+  // إضافة اسم مع ملف صوتي
+  Future<void> addAudioName(String childName, File audio) async {
+    emit(AddAudioNameLoading());
+    final result = await _audioNameUseCaseRepo.addAudioName(childName, audio);
+    switch (result) {
+      case Success<AddAudioNameEntity?>():
+        if (!isClosed) {
+          emit(AddAudioNameSuccess(result.data!));
+          // إعادة تحميل البيانات بعد الإضافة بنجاح
+          fetchNamesAudio();
+          nameAudioEmpty();
+        }
+        break;
+      case Fail<AddAudioNameEntity?>():
+        if (!isClosed) {
+          emit(AddAudioNameFailure(result.exception));
+        }
+        break;
+    }
+  }
+
   Future<void> fetchNamesAudio() async {
     emit(GetAudioNameLoading());
     final result = await _audioNameUseCaseRepo.fetchNamesAudio();
@@ -35,10 +57,10 @@ class AudioNameCubit extends Cubit<AudioNameState> {
   }
 
   Future<void> editChildName(
-    int nameAudioId,
-    String name,
-    File audioFile,
-  ) async {
+      int nameAudioId,
+      String name,
+      File audioFile,
+      ) async {
     emit(EditAudioNameLoading());
     final result = await _audioNameUseCaseRepo.editChildName(
       nameAudioId,
@@ -49,6 +71,9 @@ class AudioNameCubit extends Cubit<AudioNameState> {
       case Success<UpdateChildNameEntity?>():
         if (!isClosed) {
           emit(EditAudioNameSuccess(result.data!));
+          // إعادة تحميل البيانات بعد التعديل بنجاح
+          fetchNamesAudio();
+          nameAudioEmpty();
         }
         break;
       case Fail<UpdateChildNameEntity?>():
@@ -67,6 +92,9 @@ class AudioNameCubit extends Cubit<AudioNameState> {
       case Success<DeleteAudioNameEntity?>():
         if (!isClosed) {
           emit(DeleteAudioNameSuccess(result.data!));
+          // إعادة تحميل البيانات بعد الحذف بنجاح
+          fetchNamesAudio();
+          nameAudioEmpty();
         }
         break;
       case Fail<DeleteAudioNameEntity?>():
@@ -89,7 +117,7 @@ class AudioNameCubit extends Cubit<AudioNameState> {
         break;
       case Fail<AudioFileEmptyEntity?>():
         if (!isClosed) {
-          emit(AddAudioNameFailure(result.exception));
+          emit(EmptyAudioNameFailure(result.exception));
         }
         break;
     }
@@ -109,6 +137,18 @@ class AudioNameCubit extends Cubit<AudioNameState> {
           emit(SearchNameFailure(result.exception));
         }
         break;
+    }
+  }
+
+  // إضافة وظيفة لإعادة تعيين حالة البحث والعودة لقائمة جميع الأسماء
+  void resetToAllNames() {
+    fetchNamesAudio();
+  }
+
+  // إضافة وظيفة لإيقاف أي عمليات جارية
+  void cancelOperations() {
+    if (!isClosed) {
+      emit(AudioNameInitial());
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:controller_stories/features/AudioName/presentation/pages/AudioName_page.dart';
 import 'package:controller_stories/features/Problems/presentation/pages/Problems_page.dart';
 import 'package:controller_stories/features/Stories/presentation/pages/Stories_page.dart';
 import 'package:flutter/material.dart';
@@ -641,24 +642,30 @@ class _CategoriesPageState extends State<CategoriesPage>
 
   // Dialog Methods
   void _showAddCategoryDialog() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) =>
-          CategoryFormDialog(
-            onSave: (name, description, isActive) {
-              viewModel.insertCategory(categoryName: name,
-                  categoryDescription: description,
-                  isActive: isActive);
-              Navigator.pop(context);
-              CustomSnackBar.showSuccessSnackBar(
-                context,
-                message: 'تم إضافة الفئة بنجاح',
-              );
-            },
-          ),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AudioNamesMainPageEnhanced(),
+      ),
     );
+    // showModalBottomSheet(
+    //   context: context,
+    //   isScrollControlled: true,
+    //   backgroundColor: Colors.transparent,
+    //   builder: (context) =>
+    //       CategoryFormDialog(
+    //         onSave: (name, description, isActive) {
+    //           viewModel.insertCategory(categoryName: name,
+    //               categoryDescription: description,
+    //               isActive: isActive);
+    //           Navigator.pop(context);
+    //           CustomSnackBar.showSuccessSnackBar(
+    //             context,
+    //             message: 'تم إضافة الفئة بنجاح',
+    //           );
+    //         },
+    //       ),
+    // );
   }
 
   void _showEditCategoryDialog(Categories category) {
