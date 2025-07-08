@@ -112,14 +112,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1051.ClipsDatasourceRepo>(
       () => _i467.ClipsDatasourceRepoImpl(gh<_i680.ApiService>()),
     );
-    gh.factory<_i337.AudioNameRepository>(
-      () => _i486.AudioNameRepositoryImpl(),
-    );
     gh.factory<_i543.HomeUseCaseRepo>(
       () => _i557.HomeUseCase(gh<_i126.HomeRepository>()),
-    );
-    gh.factory<_i242.AudioNameUseCaseRepo>(
-      () => _i576.AudioNameUseCase(gh<_i337.AudioNameRepository>()),
     );
     gh.factory<_i208.CategoriesRepository>(
       () =>
@@ -134,9 +128,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i454.AudioNameDatasourceRepo>(
       () => _i861.AudioNameDatasourceRepoImpl(gh<_i680.ApiService>()),
     );
-    gh.factory<_i378.AudioNameCubit>(
-      () => _i378.AudioNameCubit(gh<_i242.AudioNameUseCaseRepo>()),
-    );
     gh.factory<_i361.CategoriesUseCaseRepo>(
       () => _i151.CategoriesUseCase(gh<_i208.CategoriesRepository>()),
     );
@@ -146,8 +137,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i444.ClipsRepository>(
       () => _i1053.ClipsRepositoryImpl(gh<_i1051.ClipsDatasourceRepo>()),
     );
+    gh.factory<_i337.AudioNameRepository>(
+      () => _i486.AudioNameRepositoryImpl(gh<_i454.AudioNameDatasourceRepo>()),
+    );
     gh.factory<_i854.ProblemsRepository>(
       () => _i507.ProblemsRepositoryImpl(gh<_i1027.ProblemsDatasourceRepo>()),
+    );
+    gh.factory<_i242.AudioNameUseCaseRepo>(
+      () => _i576.AudioNameUseCase(gh<_i337.AudioNameRepository>()),
+    );
+    gh.factory<_i378.AudioNameCubit>(
+      () => _i378.AudioNameCubit(gh<_i242.AudioNameUseCaseRepo>()),
     );
     gh.factory<_i55.StoriesRepository>(
       () => _i166.StoriesRepositoryImpl(gh<_i1073.StoriesDatasourceRepo>()),

@@ -19,9 +19,10 @@ class ApiConstants {
   static const String deleteClip = "controller/clips/delete_clip";
   static const String editClip = "controller/clips/update_clip_story";
   ///-
+  static const String addChildName = "controller/audio_name/add_child_name";
   static const String deleteChildName = "controller/audio_name/delete_child_name";
   static const String updateChildName = "controller/audio_name/update_child_name";
-  static const String addAudioNameSearch = "controller/audio_name/search";
+  static const String searchAudioName = "controller/audio_name/search";
   static const String nameAudioEmpty = "controller/audio_name/name_null";
   static const String fetchNamesAudio = "controller/audio_name/fetch_names_audio";
   ///-
