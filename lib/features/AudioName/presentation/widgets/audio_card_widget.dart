@@ -174,7 +174,7 @@ class AudioCardWidget extends StatelessWidget {
 
   String _formatDate(String dateStr) {
     try {
-      final date = DateTime.parse(dateStr);
+      final date = DateTime.parse(dateStr).subtract(const Duration(hours: 3)); // إنقاص ساعتين
       final now = DateTime.now();
       final difference = now.difference(date);
 
@@ -189,4 +189,22 @@ class AudioCardWidget extends StatelessWidget {
       return dateStr;
     }
   }
+
+// String _formatDate(String dateStr) {
+  //   try {
+  //     final date = DateTime.parse(dateStr);
+  //     final now = DateTime.now();
+  //     final difference = now.difference(date);
+  //
+  //     if (difference.inDays > 0) {
+  //       return 'منذ ${difference.inDays} يوم';
+  //     } else if (difference.inHours > 0) {
+  //       return 'منذ ${difference.inHours} ساعة';
+  //     } else {
+  //       return 'منذ قليل';
+  //     }
+  //   } catch (e) {
+  //     return dateStr;
+  //   }
+  // }
 }

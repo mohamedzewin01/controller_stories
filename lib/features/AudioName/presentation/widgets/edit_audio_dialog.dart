@@ -524,6 +524,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class EditAudioDialog extends StatefulWidget {
   final DataAudio audio;
@@ -756,29 +757,58 @@ class _EditAudioDialogState extends State<EditAudioDialog> {
     return nameController.text.trim().isNotEmpty && selectedFile != null;
   }
 
+
+
   Future<void> _pickNewAudioFile() async {
     try {
-      final result = await FilePicker.platform.pickFiles(
-        type: FileType.audio,
-        // allowedExtensions: ['mp3', 'wav', 'aac', 'm4a', 'ogg'],
-      );
+      // طلب الإذن أولًا
+      if (await Permission.storage.request().isGranted || await Permission.audio.request().isGranted) {
+        final result = await FilePicker.platform.pickFiles(
+          type: FileType.audio,
+        );
 
-      if (result != null && result.files.single.path != null) {
-        final file = File(result.files.single.path!);
+        if (result != null && result.files.single.path != null) {
+          final file = File(result.files.single.path!);
 
-        // التحقق من وجود الملف
-        if (await file.exists()) {
-          setState(() {
-            selectedFile = file;
-          });
-        } else {
-          _showError('الملف غير موجود');
+          if (await file.exists()) {
+            setState(() {
+              selectedFile = file;
+            });
+          } else {
+            _showError('الملف غير موجود');
+          }
         }
+      } else {
+        _showError('يجب السماح للوصول إلى الملفات');
       }
     } catch (e) {
       _showError('خطأ في اختيار الملف: ${e.toString()}');
     }
   }
+
+  // Future<void> _pickNewAudioFile() async {
+  //   try {
+  //     final result = await FilePicker.platform.pickFiles(
+  //       type: FileType.audio,
+  //       // allowedExtensions: ['mp3', 'wav', 'aac', 'm4a', 'ogg'],
+  //     );
+  //
+  //     if (result != null && result.files.single.path != null) {
+  //       final file = File(result.files.single.path!);
+  //
+  //       // التحقق من وجود الملف
+  //       if (await file.exists()) {
+  //         setState(() {
+  //           selectedFile = file;
+  //         });
+  //       } else {
+  //         _showError('الملف غير موجود');
+  //       }
+  //     }
+  //   } catch (e) {
+  //     _showError('خطأ في اختيار الملف: ${e.toString()}');
+  //   }
+  // }
 
   Future<void> _playOriginalAudio() async {
     if (widget.audio.audioFile == null || widget.audio.audioFile!.isEmpty) {

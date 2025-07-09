@@ -5,6 +5,7 @@ import 'package:controller_stories/core/resources/color_manager.dart';
 import 'package:controller_stories/features/AudioName/presentation/bloc/AudioName_cubit.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class AudioSelectionWidget extends StatefulWidget {
   final File? selectedFile;
@@ -255,23 +256,64 @@ class _AudioSelectionWidgetState extends State<AudioSelectionWidget> {
     );
   }
 
+
   Future<void> _pickAudioFile() async {
     try {
+      // طلب صلاحية الوصول للملفات أو الصوت
+      if (Platform.isAndroid) {
+        // Android 13+ يحتاج READ_MEDIA_AUDIO
+        var status = await Permission.audio.request();
+
+        // Android أقل من 13
+        if (!status.isGranted) {
+          status = await Permission.storage.request();
+        }
+
+        if (!status.isGranted) {
+          _showMessage('يجب السماح للوصول إلى الملفات');
+          return;
+        }
+      } else if (Platform.isIOS) {
+        // iOS permissions لو كنت بتتعامل مع الصوت المسجل أو ملفات iCloud
+        var status = await Permission.mediaLibrary.request();
+        if (!status.isGranted) {
+          _showMessage('يجب السماح للوصول إلى ملفات الصوت');
+          return;
+        }
+      }
+
+      // بعد التأكد من الإذن، اختيار الملف
       final result = await FilePicker.platform.pickFiles(
         type: FileType.audio,
-        // allowedExtensions: ['mp3', 'wav', 'aac', 'm4a', 'ogg'],
       );
 
       if (result != null && result.files.single.path != null) {
         final file = File(result.files.single.path!);
         widget.onFileSelected(file);
-
         setState(() => _useRecording = false);
       }
     } catch (e) {
-      _showMessage('خطأ في اختيار الملف: ${e.toString()}');
+      _showMessage('خطأ في اختيار الملف');
     }
   }
+
+  // Future<void> _pickAudioFile() async {
+  //   try {
+  //     final result = await FilePicker.platform.pickFiles(
+  //       type: FileType.audio,
+  //       // allowedExtensions: ['mp3', 'wav', 'aac', 'm4a', 'ogg'],
+  //     );
+  //
+  //     if (result != null && result.files.single.path != null) {
+  //       final file = File(result.files.single.path!);
+  //       widget.onFileSelected(file);
+  //
+  //       setState(() => _useRecording = false);
+  //     }
+  //   } catch (e) {
+  //     _showMessage('خطأ في اختيار الملف: ${e.toString()}');
+  //   }
+  // }
 
   Future<void> _playPausePreview() async {
     if (widget.selectedFile == null) return;
