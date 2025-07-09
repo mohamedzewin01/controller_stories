@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:controller_stories/core/resources/color_manager.dart';
 import 'package:controller_stories/features/AudioName/presentation/bloc/AudioName_cubit.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -100,7 +101,7 @@ class _AudioSelectionWidgetState extends State<AudioSelectionWidget> {
         icon: Icon(icon),
         label: Text(text),
         style: ElevatedButton.styleFrom(
-          backgroundColor: isSelected ? Colors.indigo[600] : Colors.grey[300],
+          backgroundColor: isSelected ? ColorManager.primaryColor : Colors.grey[300],
           foregroundColor: isSelected ? Colors.white : Colors.grey[700],
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(

@@ -138,7 +138,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
           hintText: 'البحث عن اسم...',
           hintStyle: TextStyle(color: Colors.grey[600]),
           prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
-          suffixIcon: _buildSuffixIcon(),
+          // suffixIcon: _buildSuffixIcon(),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 20,
@@ -150,27 +150,27 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
     );
   }
 
-  Widget? _buildSuffixIcon() {
-    if (_searchController.text.isNotEmpty) {
-      return IconButton(
-        icon: Icon(Icons.clear, color: Colors.grey[600]),
-        onPressed: _clearSearch,
-        tooltip: 'مسح البحث',
-      );
-    }
-
-    return IconButton(
-      icon: Icon(Icons.mic, color: Colors.grey[600]),
-      onPressed: () {
-        // يمكن إضافة ميزة البحث الصوتي هنا
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('ميزة البحث الصوتي قيد التطوير'),
-            duration: Duration(seconds: 2),
-          ),
-        );
-      },
-      tooltip: 'البحث الصوتي',
-    );
-  }
+  // Widget? _buildSuffixIcon() {
+  //   if (_searchController.text.isNotEmpty) {
+  //     return IconButton(
+  //       icon: Icon(Icons.clear, color: Colors.grey[600]),
+  //       onPressed: _clearSearch,
+  //       tooltip: 'مسح البحث',
+  //     );
+  //   }
+  //
+  //   return IconButton(
+  //     icon: Icon(Icons.mic, color: Colors.grey[600]),
+  //     onPressed: () {
+  //       // يمكن إضافة ميزة البحث الصوتي هنا
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(
+  //           content: Text('ميزة البحث الصوتي قيد التطوير'),
+  //           duration: Duration(seconds: 2),
+  //         ),
+  //       );
+  //     },
+  //     tooltip: 'البحث الصوتي',
+  //   );
+  // }
 }

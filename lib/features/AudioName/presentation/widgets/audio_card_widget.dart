@@ -1,4 +1,5 @@
 // lib/features/AudioName/presentation/widgets/audio_card_widget.dart
+import 'package:controller_stories/core/resources/color_manager.dart';
 import 'package:controller_stories/features/AudioName/data/models/response/get_names_audio_dto.dart';
 import 'package:controller_stories/features/AudioName/presentation/bloc/AudioName_cubit.dart';
 import 'package:controller_stories/features/AudioName/presentation/widgets/edit_audio_dialog.dart';
@@ -33,6 +34,7 @@ class AudioCardWidget extends StatelessWidget {
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
+
       elevation: isCurrentPlaying ? 8 : 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
@@ -71,7 +73,7 @@ class AudioCardWidget extends StatelessWidget {
   Widget _buildHeaderRow(BuildContext context, bool hasAudio) {
     return Row(
       children: [
-        _buildAvatar(),
+        _buildAvatar(hasAudio),
         const SizedBox(width: 16),
         _buildNameAndInfo(hasAudio),
         ActionButtonsWidget(
@@ -84,13 +86,13 @@ class AudioCardWidget extends StatelessWidget {
                     onPlayPause(audio.audioFile!, audio.nameAudioId.toString())
               : null,
           onEdit: () => _showEditDialog(context,viewModel),
-          onDelete: () => _showDeleteDialog(context),
+          onDelete: ()=> _showDeleteDialog(context,viewModel),
         ),
       ],
     );
   }
 
-  Widget _buildAvatar() {
+  Widget _buildAvatar(bool hasAudio) {
     return Hero(
       tag: 'avatar_${audio.nameAudioId}',
       child: Container(
@@ -106,7 +108,7 @@ class AudioCardWidget extends StatelessWidget {
         ),
         child: Icon(
           isCurrentPlaying ? Icons.volume_up : Icons.person,
-          color: Colors.white,
+          color: hasAudio?ColorManager.primaryColor:Colors.white,
           size: 30,
         ),
       ),
@@ -163,10 +165,10 @@ class AudioCardWidget extends StatelessWidget {
     );
   }
 
-  void _showDeleteDialog(BuildContext context) {
+  void _showDeleteDialog(BuildContext context, AudioNameCubit viewModel) {
     showDialog(
       context: context,
-      builder: (context) => DeleteAudioDialog(audio: audio),
+      builder: (context) => DeleteAudioDialog(audio: audio, viewModel: viewModel,),
     );
   }
 

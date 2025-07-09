@@ -25,7 +25,7 @@ class AudioNameUseCase implements AudioNameUseCaseRepo {
   }
 
   @override
-  Future<Result<UpdateChildNameEntity?>> editChildName(int nameAudioId, String name, File audioFile) {
+  Future<Result<UpdateChildNameEntity?>> editChildName(int nameAudioId, String? name, File? audioFile) {
    return repository.editChildName(nameAudioId, name, audioFile);
   }
 

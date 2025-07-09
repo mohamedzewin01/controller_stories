@@ -38,8 +38,8 @@ class AudioNameDatasourceRepoImpl implements AudioNameDatasourceRepo {
   @override
   Future<Result<UpdateChildNameEntity?>> editChildName(
     int nameAudioId,
-    String name,
-    File audioFile,
+    String? name,
+    File? audioFile,
   ) {
     return executeApi(() async {
       final response = await apiService.updateChildName(

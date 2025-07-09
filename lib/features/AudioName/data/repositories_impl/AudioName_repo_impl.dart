@@ -21,7 +21,7 @@ class AudioNameRepositoryImpl implements AudioNameRepository {
   }
 
   @override
-  Future<Result<UpdateChildNameEntity?>> editChildName(int nameAudioId, String name, File audioFile) {
+  Future<Result<UpdateChildNameEntity?>> editChildName(int nameAudioId, String? name, File? audioFile) {
     return audioNameDatasourceRepo.editChildName(nameAudioId, name, audioFile);
   }
 

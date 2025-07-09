@@ -202,7 +202,7 @@ class _AudioNamesPageState extends State<AudioNamesPage>
   void initState() {
     super.initState();
     viewModel = getIt.get<AudioNameCubit>();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
 
     _setupAudioPlayer();
     // _loadInitialData();
@@ -276,84 +276,86 @@ class _AudioNamesPageState extends State<AudioNamesPage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: viewModel,
-      child: BlocListener<AudioNameCubit, AudioNameState>(
-        listener: (context, state) {
-          // معالجة حالات الإضافة
-          if (state is AddAudioNameSuccess) {
-            AudioNavigationUtils.showSuccessSnackBar(
-                context,
-                state.addAudioNameEntity.message ?? 'تم إضافة الاسم بنجاح'
-            );
-          } else if (state is AddAudioNameFailure) {
-            AudioNavigationUtils.showErrorSnackBar(
-                context,
-                'خطأ في إضافة الاسم: ${state.exception.toString()}'
-            );
-          }
+    return GestureDetector(
+      onTap: () {
+        _audioPlayer.pause();
+        FocusScope.of(context).unfocus();
+      },
+      child: BlocProvider.value(
+        value: viewModel,
+        child: BlocListener<AudioNameCubit, AudioNameState>(
+          listener: (context, state) {
+            // معالجة حالات الإضافة
+            if (state is AddAudioNameSuccess) {
+              AudioNavigationUtils.showSuccessSnackBar(
+                  context,
+                  state.addAudioNameEntity.message ?? 'تم إضافة الاسم بنجاح'
+              );
+            } else if (state is AddAudioNameFailure) {
+              AudioNavigationUtils.showErrorSnackBar(
+                  context,
+                  'خطأ في إضافة الاسم: ${state.exception.toString()}'
+              );
+            }
 
-          // معالجة حالات التعديل
-          else if (state is EditAudioNameSuccess) {
-            AudioNavigationUtils.showSuccessSnackBar(
-                context,
-                state.editChildNameEntity.message ?? 'تم تحديث الاسم بنجاح'
-            );
-          } else if (state is EditAudioNameFailure) {
-            AudioNavigationUtils.showErrorSnackBar(
-                context,
-                'خطأ في تحديث الاسم: ${state.exception.toString()}'
-            );
-          }
+            // معالجة حالات التعديل
+            else if (state is EditAudioNameSuccess) {
+              AudioNavigationUtils.showSuccessSnackBar(
+                  context,
+                  state.editChildNameEntity.message ?? 'تم تحديث الاسم بنجاح'
+              );
+            } else if (state is EditAudioNameFailure) {
+              AudioNavigationUtils.showErrorSnackBar(
+                  context,
+                  'خطأ في تحديث الاسم: ${state.exception.toString()}'
+              );
+            }
 
-          // معالجة حالات الحذف
-          else if (state is DeleteAudioNameSuccess) {
-            AudioNavigationUtils.showSuccessSnackBar(
-                context,
-                state.deleteAudioNameEntity.message ?? 'تم حذف الاسم بنجاح'
-            );
-          } else if (state is DeleteAudioNameFailure) {
-            AudioNavigationUtils.showErrorSnackBar(
-                context,
-                'خطأ في حذف الاسم: ${state.exception.toString()}'
-            );
-          }
+            // معالجة حالات الحذف
+            else if (state is DeleteAudioNameSuccess) {
+              AudioNavigationUtils.showSuccessSnackBar(
+                  context,
+                  state.deleteAudioNameEntity.message ?? 'تم حذف الاسم بنجاح'
+              );
+            } else if (state is DeleteAudioNameFailure) {
+              AudioNavigationUtils.showErrorSnackBar(
+                  context,
+                  'خطأ في حذف الاسم: ${state.exception.toString()}'
+              );
+            }
 
-          // معالجة حالات البحث
-          else if (state is SearchNameFailure) {
-            AudioNavigationUtils.showErrorSnackBar(
-                context,
-                'خطأ في البحث: ${state.exception.toString()}'
-            );
-          }
+            // معالجة حالات البحث
+            else if (state is SearchNameFailure) {
+              AudioNavigationUtils.showErrorSnackBar(
+                  context,
+                  'خطأ في البحث: ${state.exception.toString()}'
+              );
+            }
 
-          // معالجة حالات تحميل البيانات العامة
-          else if (state is GetAudioNameFailure) {
-            AudioNavigationUtils.showErrorSnackBar(
-                context,
-                'خطأ في تحميل البيانات: ${state.exception.toString()}'
-            );
-          }
+            // معالجة حالات تحميل البيانات العامة
+            else if (state is GetAudioNameFailure) {
+              AudioNavigationUtils.showErrorSnackBar(
+                  context,
+                  'خطأ في تحميل البيانات: ${state.exception.toString()}'
+              );
+            }
 
-          else if (state is EmptyAudioNameFailure) {
-            AudioNavigationUtils.showErrorSnackBar(
-                context,
-                'خطأ في تحميل البيانات الفارغة: ${state.exception.toString()}'
-            );
-          }
-        },
-        child: Scaffold(
-          backgroundColor: Colors.grey[50],
-          body: RefreshIndicator(
-            onRefresh: () async {
-              await viewModel.refreshAllData();
-            },
-            child: NestedScrollView(
+            else if (state is EmptyAudioNameFailure) {
+              AudioNavigationUtils.showErrorSnackBar(
+                  context,
+                  'خطأ في تحميل البيانات الفارغة: ${state.exception.toString()}'
+              );
+            }
+          },
+          child: Scaffold(
+            backgroundColor: Colors.grey[50],
+            body: NestedScrollView(
               headerSliverBuilder: (context, innerBoxIsScrolled) => [
                 SliverAppBarWidget(tabController: _tabController),
               ],
               body: TabBarView(
                 controller: _tabController,
+
                 children: [
                   AllNamesTabWidget(
                     audioPlayer: _audioPlayer,
@@ -364,7 +366,7 @@ class _AudioNamesPageState extends State<AudioNamesPage>
                     onPlayPause: _playPauseAudio,
                     viewModel: viewModel,
                   ),
-                   EmptyAudioTabWidget(viewModel: viewModel,),
+                   // EmptyAudioTabWidget(viewModel: viewModel,),
                   AddNewTabWidget(
                     onAudioAdded: () {
                       // التبديل إلى التاب الأول بعد الإضافة
@@ -374,9 +376,7 @@ class _AudioNamesPageState extends State<AudioNamesPage>
                 ],
               ),
             ),
-          ),
-          floatingActionButton: FloatingActionButtonWidget(
-            onPressed: () => _tabController.animateTo(2),
+
           ),
         ),
       ),

@@ -216,26 +216,26 @@ class _AddNewFormWidgetState extends State<AddNewFormWidget> {
       return;
     }
 
-    // التحقق من وجود الملف الصوتي
-    if (_selectedAudioFile == null) {
-      AudioNavigationUtils.showErrorSnackBar(
-          context,
-          'يرجى اختيار ملف صوتي أو تسجيل صوت'
-      );
-      return;
-    }
+    // // التحقق من وجود الملف الصوتي
+    // if (_selectedAudioFile == null) {
+    //   AudioNavigationUtils.showErrorSnackBar(
+    //       context,
+    //       'يرجى اختيار ملف صوتي أو تسجيل صوت'
+    //   );
+    //   return;
+    // }
 
-    // التحقق من وجود الملف على القرص
-    if (!_selectedAudioFile!.existsSync()) {
-      AudioNavigationUtils.showErrorSnackBar(
-          context,
-          'الملف الصوتي غير موجود، يرجى اختيار ملف آخر'
-      );
-      setState(() {
-        _selectedAudioFile = null;
-      });
-      return;
-    }
+    // // التحقق من وجود الملف على القرص
+    // if (!_selectedAudioFile!.existsSync()) {
+    //   AudioNavigationUtils.showErrorSnackBar(
+    //       context,
+    //       'الملف الصوتي غير موجود، يرجى اختيار ملف آخر'
+    //   );
+    //   setState(() {
+    //     _selectedAudioFile = null;
+    //   });
+    //   return;
+    // }
 
     // إرسال البيانات
     try {
@@ -246,6 +246,7 @@ class _AddNewFormWidgetState extends State<AddNewFormWidget> {
       );
     } catch (e) {
       AudioNavigationUtils.showErrorSnackBar(
+
           context,
           'خطأ في إضافة الاسم: ${e.toString()}'
       );

@@ -1,4 +1,5 @@
 // lib/features/AudioName/presentation/widgets/floating_action_button_widget.dart
+import 'package:controller_stories/core/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 
 class FloatingActionButtonWidget extends StatefulWidget {
@@ -54,7 +55,7 @@ class _FloatingActionButtonWidgetState extends State<FloatingActionButtonWidget>
               });
               widget.onPressed();
             },
-            backgroundColor: Colors.indigo[600],
+            backgroundColor:ColorManager.primaryColor,
             elevation: 4,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),

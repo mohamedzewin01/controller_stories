@@ -1,3 +1,4 @@
+import 'package:controller_stories/core/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 
 class EmptyStateWidget extends StatelessWidget {
@@ -20,51 +21,53 @@ class EmptyStateWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 80,
-              color: iconColor ?? Colors.grey[400],
-            ),
-            const SizedBox(height: 24),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
+    return SingleChildScrollView(
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 80,
+                color: iconColor ?? Colors.grey[400],
               ),
-              textAlign: TextAlign.center,
-            ),
-            if (subtitle.isNotEmpty) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: 16),
               Text(
-                subtitle,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
+                title,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
                 ),
                 textAlign: TextAlign.center,
               ),
-            ],
-            if (actionText != null && onAction != null) ...[
-              const SizedBox(height: 24),
-              ElevatedButton.icon(
-                onPressed: onAction,
-                icon: const Icon(Icons.add),
-                label: Text(actionText!),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.indigo[600],
-                  foregroundColor: Colors.white,
+              if (subtitle.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[600],
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-              ),
+              ],
+              if (actionText != null && onAction != null) ...[
+                const SizedBox(height: 16),
+                ElevatedButton.icon(
+                  onPressed: onAction,
+                  icon: const Icon(Icons.add),
+                  label: Text(actionText!),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorManager.primaryColor,
+                    foregroundColor: Colors.white,
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

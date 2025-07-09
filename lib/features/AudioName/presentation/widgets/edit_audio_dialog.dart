@@ -513,6 +513,8 @@
 // }
 
 // lib/features/AudioName/presentation/widgets/edit_audio_dialog.dart
+import 'dart:developer';
+
 import 'package:controller_stories/features/AudioName/data/models/response/audio_file_empty_dto.dart';
 import 'package:controller_stories/features/AudioName/data/models/response/get_names_audio_dto.dart';
 import 'package:controller_stories/features/AudioName/presentation/bloc/AudioName_cubit.dart';
@@ -829,14 +831,16 @@ class _EditAudioDialogState extends State<EditAudioDialog> {
   }
 
   void _saveChanges() {
+    print("dddddddddddddddddddd");
     // التحقق من صحة البيانات
-    if (nameController.text.trim().isEmpty) {
-      _showError('يرجى إدخال اسم الطفل');
-      return;
-    }
+    // if (nameController.text.trim().isEmpty) {
+    //   _showError('يرجى إدخال اسم الطفل');
+    //   return;
+    // }
 
     if (selectedFile == null) {
       _showError('يرجى اختيار ملف صوتي جديد');
+      print('يرجى اختيار ملف صوتي جديد');
       return;
     }
 
@@ -847,13 +851,15 @@ class _EditAudioDialogState extends State<EditAudioDialog> {
     }
 
     try {
-      context.read<AudioNameCubit>().editChildName(
-        widget.audio.nameAudioId!,
-        nameController.text.trim(),
-        selectedFile!,
+      widget.viewModel.editChildName(
+        nameAudioId:  widget.audio.nameAudioId!,
+        audioFile:selectedFile!,
+
+
+
       );
     } catch (e) {
-      // _showError('خطأ في حفظ التغييرات: ${e.toString()}');
+      log(e.toString());
     }
   }
 
@@ -867,12 +873,15 @@ class _EditAudioDialogState extends State<EditAudioDialog> {
 // Dialog للحذف
 class DeleteAudioDialog extends StatelessWidget {
   final DataAudio audio;
+final  AudioNameCubit viewModel;
 
-  const DeleteAudioDialog({super.key, required this.audio});
+  const DeleteAudioDialog({super.key, required this.audio, required this.viewModel});
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AudioNameCubit, AudioNameState>(
+    return BlocProvider.value(
+  value: viewModel,
+  child: BlocListener<AudioNameCubit, AudioNameState>(
       listener: (context, state) {
         if (state is DeleteAudioNameSuccess) {
           Navigator.pop(context);
@@ -936,7 +945,8 @@ class DeleteAudioDialog extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ),
+);
   }
 }
 
@@ -1105,7 +1115,7 @@ class _AddAudioDialogState extends State<AddAudioDialog> {
     try {
       final result = await FilePicker.platform.pickFiles(
         type: FileType.audio,
-        allowedExtensions: ['mp3', 'wav', 'aac', 'm4a', 'ogg'],
+        // allowedExtensions: ['mp3', 'wav', 'aac', 'm4a', 'ogg'],
       );
 
       if (result != null && result.files.single.path != null) {
@@ -1147,22 +1157,27 @@ class _AddAudioDialogState extends State<AddAudioDialog> {
   }
 
   void _addAudio() {
-    if (selectedFile == null) {
-      _showError('يرجى اختيار ملف صوتي');
-      return;
-    }
+    // if (selectedFile == null) {
+    //   _showError('يرجى اختيار ملف صوتي');
+    //   print('يرجى اختيار ملف صوتي');
+    //   return;
+    // }
 
-    if (!selectedFile!.existsSync()) {
-      _showError('الملف غير موجود');
-      setState(() => selectedFile = null);
-      return;
-    }
+    // if (!selectedFile!.existsSync()) {
+    //   _showError('الملف غير موجود');
+    //   setState(() => selectedFile = null);
+    //   print('الملف غير موجود');
+    //   return;
+    // }
 
     try {
-      context.read<AudioNameCubit>().editChildName(
-        widget.item.nameAudioId!,
-        widget.item.name!,
-        selectedFile!,
+      widget.viewModel.editChildName(
+        nameAudioId: widget.item.nameAudioId!,
+        audioFile: selectedFile!,
+        name: widget.item.name!,
+
+
+
       );
     } catch (e) {
       _showError('خطأ في إضافة الملف: ${e.toString()}');

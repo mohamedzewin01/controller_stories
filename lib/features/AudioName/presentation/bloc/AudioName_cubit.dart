@@ -189,7 +189,7 @@ class AudioNameCubit extends Cubit<AudioNameState> {
           // إعادة تحميل البيانات بعد الإضافة بنجاح
           await Future.delayed(const Duration(milliseconds: 500));
           if (!isClosed) {
-            await _refreshData();
+            // await _refreshData();
           }
           break;
         case Fail<AddAudioNameEntity?>():
@@ -228,21 +228,21 @@ class AudioNameCubit extends Cubit<AudioNameState> {
     }
   }
 
-  Future<void> editChildName(
-      int nameAudioId,
-      String name,
-      File audioFile,
+  Future<void> editChildName({ required int nameAudioId,
+    String? name,
+    File? audioFile,}
       ) async {
     if (isClosed) return;
 
     emit(EditAudioNameLoading());
-
     try {
       final result = await _audioNameUseCaseRepo.editChildName(
+
         nameAudioId,
         name,
         audioFile,
       );
+
 
       if (isClosed) return;
 
@@ -309,6 +309,9 @@ class AudioNameCubit extends Cubit<AudioNameState> {
       switch (result) {
         case Success<AudioFileEmptyEntity?>():
           emit(EmptyAudioNameSuccess(result.data!));
+          if (!isClosed) {
+            await _refreshData();
+          }
           break;
         case Fail<AudioFileEmptyEntity?>():
           emit(EmptyAudioNameFailure(result.exception));
@@ -351,16 +354,15 @@ class AudioNameCubit extends Cubit<AudioNameState> {
     }
   }
 
-  // دالة مساعدة لإعادة تحميل جميع البيانات
+
   Future<void> _refreshData() async {
     try {
       // تحميل قائمة الأسماء
       await fetchNamesAudio();
 
-      // تحميل قائمة الأسماء بدون ملفات صوتية
-      await nameAudioEmpty();
+
     } catch (e) {
-      // في حالة حدوث خطأ، لا نفعل شيء لأن البيانات ستبقى كما هي
+
     }
   }
 

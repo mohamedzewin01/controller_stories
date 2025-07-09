@@ -1,4 +1,5 @@
 
+import 'package:controller_stories/core/utils/my_bloc_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -14,7 +15,7 @@ Future<void> main() async {
   // await FirebaseConfig.initializeFirebase();
   await CacheService.cacheInitialization();
   configureDependencies();
-   // Bloc.observer = MyBlocObserver();
+   Bloc.observer = MyBlocObserver();
   runApp(const MyApp());
 }
 

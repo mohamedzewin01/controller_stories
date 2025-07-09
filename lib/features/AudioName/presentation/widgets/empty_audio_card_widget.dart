@@ -1,4 +1,5 @@
 // lib/features/AudioName/presentation/widgets/empty_audio_card_widget.dart
+import 'package:controller_stories/core/resources/color_manager.dart';
 import 'package:controller_stories/features/AudioName/data/models/response/audio_file_empty_dto.dart';
 import 'package:controller_stories/features/AudioName/presentation/bloc/AudioName_cubit.dart';
 import 'package:controller_stories/features/AudioName/presentation/widgets/edit_audio_dialog.dart';
@@ -89,7 +90,7 @@ class EmptyAudioCardWidget extends StatelessWidget {
       icon: const Icon(Icons.add, size: 18),
       label: const Text('إضافة صوت'),
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue[600],
+        backgroundColor: ColorManager.primaryColor,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),

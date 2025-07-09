@@ -155,7 +155,7 @@
 //     );
 //   }
 // }
-
+// }
 // lib/features/AudioName/presentation/widgets/all_names_tab_widget.dart
 import 'package:controller_stories/features/AudioName/data/models/response/get_names_audio_dto.dart';
 import 'package:controller_stories/features/AudioName/data/models/response/search_name_audio_dto.dart';
@@ -196,27 +196,40 @@ class AllNamesTabWidget extends StatefulWidget {
 class _AllNamesTabWidgetState extends State<AllNamesTabWidget> {
   bool _isSearchMode = false;
   String _currentQuery = '';
+  bool _hasLoadedInitialData = false;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // تحميل البيانات عند بناء الويدجت
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     if (mounted) {
-  //       context.read<AudioNameCubit>().fetchNamesAudio();
-  //     }
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+    // تحميل البيانات مرة واحدة عند بناء الويدجت
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && !_hasLoadedInitialData) {
+        _loadInitialData();
+      }
+    });
+  }
+
+  void _loadInitialData() {
+    try {
+      widget.viewModel.fetchNamesAudio();
+      _hasLoadedInitialData = true;
+    } catch (e) {
+      _showError('خطأ في تحميل البيانات');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    AudioNameCubit.get(context).fetchNamesAudio();
     return RefreshIndicator(
       onRefresh: () async {
-        if (_isSearchMode && _currentQuery.isNotEmpty) {
-          context.read<AudioNameCubit>().searchAudioName(_currentQuery);
-        } else {
-          context.read<AudioNameCubit>().fetchNamesAudio();
+        try {
+          if (_isSearchMode && _currentQuery.isNotEmpty) {
+            await widget.viewModel.searchAudioName(_currentQuery);
+          } else {
+            await widget.viewModel.fetchNamesAudio();
+          }
+        } catch (e) {
+          _showError('خطأ في تحديث البيانات');
         }
       },
       child: Column(
@@ -227,7 +240,7 @@ class _AllNamesTabWidgetState extends State<AllNamesTabWidget> {
           ),
           Expanded(
             child: BlocBuilder<AudioNameCubit, AudioNameState>(
-              builder: (context, state) => _buildContent(context, state,widget.viewModel),
+              builder: (context, state) => _buildContent(context, state, widget.viewModel),
             ),
           ),
         ],
@@ -265,14 +278,14 @@ class _AllNamesTabWidgetState extends State<AllNamesTabWidget> {
     if (state is GetAudioNameFailure && !_isSearchMode) {
       return ErrorStateWidget(
         message: 'خطأ في تحميل البيانات',
-        onRetry: () => context.read<AudioNameCubit>().fetchNamesAudio(),
+        onRetry: () => _retryLoadData(),
       );
     }
 
     if (state is SearchNameFailure && _isSearchMode) {
       return ErrorStateWidget(
         message: 'خطأ في البحث',
-        onRetry: () => context.read<AudioNameCubit>().searchAudioName(_currentQuery),
+        onRetry: () => _retrySearch(),
       );
     }
 
@@ -292,8 +305,8 @@ class _AllNamesTabWidgetState extends State<AllNamesTabWidget> {
       BuildContext context,
       List<DataAudio> audioList, {
         bool isSearchResult = false,
-       required AudioNameCubit viewModel,
-      }  ) {
+        required AudioNameCubit viewModel,
+      }) {
     if (audioList.isEmpty) {
       return EmptyStateWidget(
         icon: isSearchResult ? Icons.search_off : Icons.music_note,
@@ -319,14 +332,14 @@ class _AllNamesTabWidgetState extends State<AllNamesTabWidget> {
           isPlaying: widget.isPlaying,
           duration: widget.duration,
           position: widget.position,
-          onPlayPause: widget.onPlayPause,
-          viewModel:viewModel ,
+          onPlayPause: (audioUrl, id) => _handlePlayPause(audioUrl, id),
+          viewModel: viewModel,
         );
       },
     );
   }
 
-  Widget _buildSearchResults(BuildContext context, List<DataSearch> searchResults, AudioNameCubit viewModel,) {
+  Widget _buildSearchResults(BuildContext context, List<DataSearch> searchResults, AudioNameCubit viewModel) {
     if (searchResults.isEmpty) {
       return EmptyStateWidget(
         icon: Icons.search_off,
@@ -355,11 +368,24 @@ class _AllNamesTabWidgetState extends State<AllNamesTabWidget> {
           isPlaying: widget.isPlaying,
           duration: widget.duration,
           position: widget.position,
-          onPlayPause: widget.onPlayPause,
+          onPlayPause: (audioUrl, id) => _handlePlayPause(audioUrl, id),
           viewModel: viewModel,
         );
       },
     );
+  }
+
+  // معالجة تشغيل الصوت مع معالجة الأخطاء
+  Future<void> _handlePlayPause(String audioUrl, String id) async {
+    try {
+      if (audioUrl.isEmpty) {
+        _showError('لا يوجد ملف صوتي');
+        return;
+      }
+      await widget.onPlayPause(audioUrl, id);
+    } catch (e) {
+      _showError('خطأ في تشغيل الملف الصوتي');
+    }
   }
 
   void _handleSearch(String query) {
@@ -368,10 +394,14 @@ class _AllNamesTabWidgetState extends State<AllNamesTabWidget> {
       _isSearchMode = query.isNotEmpty;
     });
 
-    if (query.trim().isEmpty) {
-      context.read<AudioNameCubit>().fetchNamesAudio();
-    } else {
-      context.read<AudioNameCubit>().searchAudioName(query.trim());
+    try {
+      if (query.trim().isEmpty) {
+        widget.viewModel.fetchNamesAudio();
+      } else {
+        widget.viewModel.searchAudioName(query.trim());
+      }
+    } catch (e) {
+      _showError('خطأ في البحث');
     }
   }
 
@@ -380,6 +410,44 @@ class _AllNamesTabWidgetState extends State<AllNamesTabWidget> {
       _isSearchMode = false;
       _currentQuery = '';
     });
-    context.read<AudioNameCubit>().fetchNamesAudio();
+
+    try {
+      widget.viewModel.fetchNamesAudio();
+    } catch (e) {
+      _showError('خطأ في تحميل البيانات');
+    }
+  }
+
+  void _retryLoadData() {
+    try {
+      widget.viewModel.fetchNamesAudio();
+    } catch (e) {
+      _showError('خطأ في إعادة تحميل البيانات');
+    }
+  }
+
+  void _retrySearch() {
+    try {
+      if (_currentQuery.isNotEmpty) {
+        widget.viewModel.searchAudioName(_currentQuery);
+      }
+    } catch (e) {
+      _showError('خطأ في إعادة البحث');
+    }
+  }
+
+  void _showError(String message) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.red[600],
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      );
+    }
   }
 }

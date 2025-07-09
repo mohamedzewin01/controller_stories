@@ -86,8 +86,8 @@ class _CategoriesPageState extends State<CategoriesPage>
           slivers: [
             // Custom App Bar
             SliverCustomAppBar(
-              iconActionOne: Icons.search_rounded,
-              iconActionTwo: Icons.add_rounded,
+              iconActionOne: Icons.music_note_rounded,
+              iconActionTwo: Icons.warning,
               onTapActionOne: () => _showSearchDialog(),
               onTapActionTow: () => _showAddCategoryDialog(),
             ),
