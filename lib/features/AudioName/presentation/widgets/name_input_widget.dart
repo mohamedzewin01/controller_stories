@@ -1,11 +1,14 @@
+// lib/features/AudioName/presentation/widgets/name_input_widget.dart
 import 'package:flutter/material.dart';
 
 class NameInputWidget extends StatelessWidget {
   final TextEditingController controller;
+  final String? Function(String?)? validator;
 
   const NameInputWidget({
     super.key,
     required this.controller,
+    this.validator,
   });
 
   @override
@@ -22,8 +25,9 @@ class NameInputWidget extends StatelessWidget {
           ),
         ],
       ),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
+        validator: validator,
         decoration: InputDecoration(
           labelText: 'اسم الطفل',
           hintText: 'أدخل اسم الطفل هنا...',
@@ -31,8 +35,13 @@ class NameInputWidget extends StatelessWidget {
           border: InputBorder.none,
           contentPadding: const EdgeInsets.all(20),
           labelStyle: TextStyle(color: Colors.grey[700]),
+          errorStyle: TextStyle(
+            color: Colors.red[600],
+            fontSize: 12,
+          ),
         ),
         style: const TextStyle(fontSize: 16),
+        textInputAction: TextInputAction.done,
       ),
     );
   }

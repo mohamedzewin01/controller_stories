@@ -1,5 +1,6 @@
 // lib/features/AudioName/presentation/widgets/empty_audio_card_widget.dart
 import 'package:controller_stories/features/AudioName/data/models/response/audio_file_empty_dto.dart';
+import 'package:controller_stories/features/AudioName/presentation/bloc/AudioName_cubit.dart';
 import 'package:controller_stories/features/AudioName/presentation/widgets/edit_audio_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -7,10 +8,10 @@ import 'package:flutter/material.dart';
 
 class EmptyAudioCardWidget extends StatelessWidget {
   final DataFileEmpty item;
-
+  final AudioNameCubit viewModel;
   const EmptyAudioCardWidget({
     super.key,
-    required this.item,
+    required this.item, required this.viewModel,
   });
 
   @override
@@ -25,7 +26,7 @@ class EmptyAudioCardWidget extends StatelessWidget {
             _buildAvatar(),
             const SizedBox(width: 16),
             _buildNameAndInfo(),
-            _buildAddButton(context),
+            _buildAddButton(context,viewModel),
           ],
         ),
       ),
@@ -82,9 +83,9 @@ class EmptyAudioCardWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildAddButton(BuildContext context) {
+  Widget _buildAddButton(BuildContext context, AudioNameCubit viewModel) {
     return ElevatedButton.icon(
-      onPressed: () => _showAddAudioDialog(context),
+      onPressed: () => _showAddAudioDialog(context,viewModel),
       icon: const Icon(Icons.add, size: 18),
       label: const Text('إضافة صوت'),
       style: ElevatedButton.styleFrom(
@@ -98,10 +99,10 @@ class EmptyAudioCardWidget extends StatelessWidget {
     );
   }
 
-  void _showAddAudioDialog(BuildContext context) {
+  void _showAddAudioDialog(BuildContext context, AudioNameCubit viewModel) {
     showDialog(
       context: context,
-      builder: (context) => AddAudioDialog(item: item),
+      builder: (context) => AddAudioDialog(item: item,viewModel: viewModel,),
     );
   }
 

@@ -11,48 +11,53 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'empty_audio_card_widget.dart';
 
 class EmptyAudioTabWidget extends StatelessWidget {
-  const EmptyAudioTabWidget({super.key});
-
+  const EmptyAudioTabWidget({super.key,  required this.viewModel});
+final AudioNameCubit viewModel ;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AudioNameCubit, AudioNameState>(
-      builder: (context, state) {
-        if (state is EmptyAudioNameLoading) {
-          // return const LoadingStateWidget(message: 'جاري تحميل الأسماء بدون ملفات صوتية...');
-        }
+    viewModel.nameAudioEmpty();
+    return BlocProvider(
+      create: (context) => viewModel,
+      child: BlocBuilder<AudioNameCubit, AudioNameState>(
+        builder: (context, state) {
+          if (state is EmptyAudioNameLoading) {
+            return const LoadingStateWidget(
+                message: 'جاري تحميل الأسماء بدون ملفات صوتية...');
+          }
 
-        if (state is EmptyAudioNameSuccess) {
-          final emptyList = state.audioFileEmptyEntity.data ?? [];
+          if (state is EmptyAudioNameSuccess) {
+            final emptyList = state.audioFileEmptyEntity.data ?? [];
 
-          if (emptyList.isEmpty) {
-            return const EmptyStateWidget(
-              icon: Icons.check_circle,
-              title: 'ممتاز! 🎉',
-              subtitle: 'جميع الأسماء لديها ملفات صوتية',
-              iconColor: Colors.green,
+            if (emptyList.isEmpty) {
+              return const EmptyStateWidget(
+                icon: Icons.check_circle,
+                title: 'ممتاز! 🎉',
+                subtitle: 'جميع الأسماء لديها ملفات صوتية',
+                iconColor: Colors.green,
+              );
+            }
+
+            return _buildEmptyAudioList(emptyList,viewModel);
+          }
+
+          if (state is EmptyAudioNameFailure) {
+            return ErrorStateWidget(
+              message: 'خطأ في تحميل البيانات',
+              onRetry: () => context.read<AudioNameCubit>().nameAudioEmpty(),
             );
           }
 
-          return _buildEmptyAudioList(emptyList);
-        }
-
-        if (state is EmptyAudioNameFailure) {
-          return ErrorStateWidget(
-            message: 'خطأ في تحميل البيانات',
-            onRetry: () => context.read<AudioNameCubit>().nameAudioEmpty(),
+          return const EmptyStateWidget(
+            icon: Icons.info,
+            title: 'لا توجد بيانات',
+            subtitle: 'لم يتم تحميل البيانات بعد',
           );
-        }
-
-        return const EmptyStateWidget(
-          icon: Icons.info,
-          title: 'لا توجد بيانات',
-          subtitle: 'لم يتم تحميل البيانات بعد',
-        );
-      },
+        },
+      ),
     );
   }
 
-  Widget _buildEmptyAudioList(List<DataFileEmpty> emptyList) {
+  Widget _buildEmptyAudioList(List<DataFileEmpty> emptyList, AudioNameCubit viewModel) {
     return Column(
       children: [
         // Header Info
@@ -87,7 +92,7 @@ class EmptyAudioTabWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             itemCount: emptyList.length,
             itemBuilder: (context, index) {
-              return EmptyAudioCardWidget(item: emptyList[index]);
+              return EmptyAudioCardWidget(item: emptyList[index],viewModel: viewModel,);
             },
           ),
         ),

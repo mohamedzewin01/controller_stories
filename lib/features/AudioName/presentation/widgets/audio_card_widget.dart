@@ -1,10 +1,11 @@
 // lib/features/AudioName/presentation/widgets/audio_card_widget.dart
 import 'package:controller_stories/features/AudioName/data/models/response/get_names_audio_dto.dart';
+import 'package:controller_stories/features/AudioName/presentation/bloc/AudioName_cubit.dart';
 import 'package:controller_stories/features/AudioName/presentation/widgets/edit_audio_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'audio_controls_widget.dart';
 import 'action_buttons_widget.dart';
-
 
 class AudioCardWidget extends StatelessWidget {
   final DataAudio audio;
@@ -13,6 +14,7 @@ class AudioCardWidget extends StatelessWidget {
   final Duration duration;
   final Duration position;
   final Function(String, String) onPlayPause;
+  final AudioNameCubit viewModel;
 
   const AudioCardWidget({
     super.key,
@@ -22,6 +24,7 @@ class AudioCardWidget extends StatelessWidget {
     required this.duration,
     required this.position,
     required this.onPlayPause,
+    required this.viewModel,
   });
 
   @override
@@ -40,25 +43,25 @@ class AudioCardWidget extends StatelessWidget {
               : null,
           gradient: isCurrentPlaying
               ? LinearGradient(
-            colors: [Colors.indigo[50]!, Colors.white],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          )
+                  colors: [Colors.indigo[50]!, Colors.white],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                )
               : null,
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              _buildHeaderRow(context, hasAudio),
-              if (isCurrentPlaying && hasAudio) ...[
-                const SizedBox(height: 16),
-                AudioControlsWidget(
-                  duration: duration,
-                  position: position,
-                ),
+          child: BlocProvider.value(
+            value: viewModel,
+            child: Column(
+              children: [
+                _buildHeaderRow(context, hasAudio),
+                if (isCurrentPlaying && hasAudio) ...[
+                  const SizedBox(height: 16),
+                  AudioControlsWidget(duration: duration, position: position),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),
@@ -77,9 +80,10 @@ class AudioCardWidget extends StatelessWidget {
           isCurrentPlaying: isCurrentPlaying,
           isPlaying: isPlaying,
           onPlay: hasAudio
-              ? () => onPlayPause(audio.audioFile!, audio.nameAudioId.toString())
+              ? () =>
+                    onPlayPause(audio.audioFile!, audio.nameAudioId.toString())
               : null,
-          onEdit: () => _showEditDialog(context),
+          onEdit: () => _showEditDialog(context,viewModel),
           onDelete: () => _showDeleteDialog(context),
         ),
       ],
@@ -145,20 +149,17 @@ class AudioCardWidget extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             _formatDate(audio.createdAt ?? ''),
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[600],
-            ),
+            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
           ),
         ],
       ),
     );
   }
 
-  void _showEditDialog(BuildContext context) {
+  void _showEditDialog(BuildContext context, AudioNameCubit viewModel,) {
     showDialog(
       context: context,
-      builder: (context) => EditAudioDialog(audio: audio),
+      builder: (context) => EditAudioDialog(audio: audio, viewModel: viewModel,),
     );
   }
 

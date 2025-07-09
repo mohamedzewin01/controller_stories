@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'statistics_cards_widget.dart';
+
 
 class SliverAppBarWidget extends StatelessWidget {
   final TabController tabController;
@@ -15,7 +15,7 @@ class SliverAppBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      expandedHeight: 280,
+      expandedHeight: 130,
       floating: false,
       pinned: true,
       backgroundColor: Colors.indigo[600],
@@ -28,23 +28,23 @@ class SliverAppBarWidget extends StatelessWidget {
               end: Alignment.bottomRight,
             ),
           ),
-          child: SafeArea(
-            child: Column(
-              children: [
-                const SizedBox(height: 60),
-                const Text(
-                  'إدارة الأسماء الصوتية',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const StatisticsCardsWidget(),
-              ],
-            ),
-          ),
+          // child: SafeArea(
+          //   child: Column(
+          //     children: [
+          //       const SizedBox(height: 60),
+          //       const Text(
+          //         'إدارة الأسماء الصوتية',
+          //         style: TextStyle(
+          //           color: Colors.white,
+          //           fontSize: 24,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       const SizedBox(height: 20),
+          //       // const StatisticsCardsWidget(),
+          //     ],
+          //   ),
+          // ),
         ),
       ),
       bottom: PreferredSize(

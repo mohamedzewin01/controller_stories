@@ -72,15 +72,7 @@ class _AudioSelectionWidgetState extends State<AudioSelectionWidget> {
                   },
                 ),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: _buildSelectionButton(
-                  'تسجيل صوت',
-                  Icons.mic,
-                  _useRecording,
-                      () => setState(() => _useRecording = true),
-                ),
-              ),
+
             ],
           ),
 
