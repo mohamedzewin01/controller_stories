@@ -4,14 +4,18 @@ class EmptyStateWidget extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
-  final Widget? action;
+  final String? actionText;
+  final VoidCallback? onAction;
+  final Color? iconColor;
 
   const EmptyStateWidget({
     super.key,
     required this.icon,
     required this.title,
     this.subtitle = '',
-    this.action,
+    this.actionText,
+    this.onAction,
+    this.iconColor,
   });
 
   @override
@@ -25,7 +29,7 @@ class EmptyStateWidget extends StatelessWidget {
             Icon(
               icon,
               size: 80,
-              color: Colors.grey[400],
+              color: iconColor ?? Colors.grey[400],
             ),
             const SizedBox(height: 24),
             Text(
@@ -48,9 +52,17 @@ class EmptyStateWidget extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ],
-            if (action != null) ...[
+            if (actionText != null && onAction != null) ...[
               const SizedBox(height: 24),
-              action!,
+              ElevatedButton.icon(
+                onPressed: onAction,
+                icon: const Icon(Icons.add),
+                label: Text(actionText!),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.indigo[600],
+                  foregroundColor: Colors.white,
+                ),
+              ),
             ],
           ],
         ),

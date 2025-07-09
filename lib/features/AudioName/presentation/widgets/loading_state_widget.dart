@@ -1,9 +1,10 @@
+// lib/features/AudioName/presentation/widgets/loading_state_widget.dart
 import 'package:flutter/material.dart';
 
-class LoadingWidget extends StatelessWidget {
+class LoadingStateWidget extends StatelessWidget {
   final String message;
 
-  const LoadingWidget({
+  const LoadingStateWidget({
     super.key,
     this.message = 'جاري التحميل...',
   });
@@ -28,3 +29,6 @@ class LoadingWidget extends StatelessWidget {
     );
   }
 }
+
+
+

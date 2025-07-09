@@ -1,4 +1,5 @@
-import 'package:controller_stories/features/AudioName/presentation/pages/AudioName_page.dart';
+
+import 'package:controller_stories/features/AudioName/presentation/pages/audio_names_page.dart';
 import 'package:controller_stories/features/Problems/presentation/pages/Problems_page.dart';
 import 'package:controller_stories/features/Stories/presentation/pages/Stories_page.dart';
 import 'package:flutter/material.dart';
@@ -645,7 +646,7 @@ class _CategoriesPageState extends State<CategoriesPage>
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const AudioNamesMainPageEnhanced(),
+        builder: (context) => const AudioNamesPage(),
       ),
     );
     // showModalBottomSheet(

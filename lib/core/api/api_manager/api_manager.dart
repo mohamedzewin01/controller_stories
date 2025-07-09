@@ -14,7 +14,6 @@ import 'package:controller_stories/features/Categories/data/models/response/dele
 import 'package:controller_stories/features/Categories/data/models/response/fetch_categories_dto.dart';
 import 'package:controller_stories/features/Categories/data/models/response/insert_category_dto.dart';
 import 'package:controller_stories/features/Categories/data/models/response/update_category_dto.dart';
-import 'package:controller_stories/features/Clips/data/models/request/clip_model_request.dart';
 import 'package:controller_stories/features/Clips/data/models/request/delete_clip_request.dart';
 import 'package:controller_stories/features/Clips/data/models/request/fetch_clips_request.dart';
 import 'package:controller_stories/features/Clips/data/models/response/add_clips_dto.dart';
