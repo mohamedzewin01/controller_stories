@@ -3,4 +3,7 @@ import 'package:controller_stories/features/RequestStory/domain/entities/request
 
 abstract class RequestStoryUseCaseRepo {
   Future<Result<GetRequestStoryEntity?>>getRequestStories();
+  Future<Result<AddRepliesEntity?>>addReplies(
+      {required int requestId,required String replyText, int? attachedStoryId});
+  Future<Result<GetAllStoriesEntity?>>getAllStories();
 }

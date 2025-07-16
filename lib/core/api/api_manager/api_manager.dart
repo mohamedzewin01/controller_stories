@@ -27,6 +27,9 @@ import 'package:controller_stories/features/Problems/data/models/response/add_pr
 import 'package:controller_stories/features/Problems/data/models/response/delete_problem_dto.dart';
 import 'package:controller_stories/features/Problems/data/models/response/get_problems_dto.dart';
 import 'package:controller_stories/features/Problems/data/models/response/update_problem_dto.dart';
+import 'package:controller_stories/features/RequestStory/data/models/request/add_replies_request.dart';
+import 'package:controller_stories/features/RequestStory/data/models/response/add_replies_dto.dart';
+import 'package:controller_stories/features/RequestStory/data/models/response/get_all_stories_dto.dart';
 import 'package:controller_stories/features/RequestStory/data/models/response/get_request_story_dto.dart';
 import 'package:controller_stories/features/Stories/data/models/request/delete_story_request.dart';
 import 'package:controller_stories/features/Stories/data/models/request/fetch_stories_by_category_request.dart';
@@ -179,6 +182,17 @@ abstract class ApiService {
 
   @POST(ApiConstants.getStoryRequests)
   Future<GetRequestStoryDto?> getStoryRequests();
+
+
+  @POST(ApiConstants.getAllStories)
+  Future<GetAllStoriesDto?> getAllStories();
+
+
+
+  @POST(ApiConstants.addReplies)
+  Future<AddRepliesDto?> addReplies(
+      @Body() AddRepliesRequest addRepliesRequest,
+      );
 
 
 }

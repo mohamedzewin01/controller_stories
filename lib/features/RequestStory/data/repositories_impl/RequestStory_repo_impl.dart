@@ -14,5 +14,15 @@ class RequestStoryRepositoryImpl implements RequestStoryRepository {
 return requestStoryDatasourceRepo.getRequestStories();
   }
 
+  @override
+  Future<Result<AddRepliesEntity?>> addReplies(int requestId, String replyText, int? attachedStoryId) {
+  return requestStoryDatasourceRepo.addReplies(requestId, replyText, attachedStoryId);
+  }
+
+  @override
+  Future<Result<GetAllStoriesEntity?>> getAllStories() {
+  return requestStoryDatasourceRepo.getAllStories();
+  }
+
   // implementation
 }

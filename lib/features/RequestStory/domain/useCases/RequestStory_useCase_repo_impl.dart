@@ -17,4 +17,15 @@ class RequestStoryUseCase implements RequestStoryUseCaseRepo {
    return repository.getRequestStories();
   }
 
+  @override
+  Future<Result<AddRepliesEntity?>> addReplies(
+      {required int requestId,required String replyText, int? attachedStoryId}) {
+return repository.addReplies(requestId, replyText, attachedStoryId);
+  }
+
+  @override
+  Future<Result<GetAllStoriesEntity?>> getAllStories() {
+    return repository.getAllStories();
+  }
+
 }

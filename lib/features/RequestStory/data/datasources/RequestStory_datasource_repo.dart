@@ -4,4 +4,7 @@ import 'package:controller_stories/features/RequestStory/domain/entities/request
 abstract class RequestStoryDatasourceRepo {
   Future<Result<GetRequestStoryEntity?>>getRequestStories();
 
+  Future<Result<AddRepliesEntity?>>addReplies(int requestId, String replyText, int? attachedStoryId);
+  Future<Result<GetAllStoriesEntity?>>getAllStories();
+
 }
