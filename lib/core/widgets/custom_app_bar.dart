@@ -64,20 +64,28 @@
 //   }
 // }
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:controller_stories/core/resources/color_manager.dart';
 import 'package:controller_stories/l10n/app_localizations.dart';
 
 class CustomAppBar extends StatefulWidget {
-  const CustomAppBar({super.key, this.onTapActionTow, this.onTapActionOne, this.iconActionTwo, this.iconActionOne, this.showBadge, });
+  const CustomAppBar({
+    super.key,
+    this.onTapActionTow,
+    this.onTapActionOne,
+    this.iconActionTwo,
+    this.iconActionOne,
+    this.showBadge, this.iconActionThree, this.onTapActionThree,
+  });
 
   final VoidCallback? onTapActionTow;
   final VoidCallback? onTapActionOne;
-  final IconData ? iconActionTwo;
-  final IconData ? iconActionOne;
-  final bool ? showBadge;
+  final IconData? iconActionThree;
+  final VoidCallback? onTapActionThree;
+  final IconData? iconActionTwo;
+  final IconData? iconActionOne;
+  final bool? showBadge;
 
   @override
   State<CustomAppBar> createState() => _CustomAppBarState();
@@ -97,26 +105,18 @@ class _CustomAppBarState extends State<CustomAppBar>
       duration: const Duration(seconds: 2),
       vsync: this,
     );
-    _pulseAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _pulseController,
-      curve: Curves.easeInOut,
-    ));
+    _pulseAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
 
     // إعداد أنيميشن اللمعان
     _shimmerController = AnimationController(
       duration: const Duration(seconds: 3),
       vsync: this,
     );
-    _shimmerAnimation = Tween<double>(
-      begin: -1.0,
-      end: 2.0,
-    ).animate(CurvedAnimation(
-      parent: _shimmerController,
-      curve: Curves.easeInOut,
-    ));
+    _shimmerAnimation = Tween<double>(begin: -1.0, end: 2.0).animate(
+      CurvedAnimation(parent: _shimmerController, curve: Curves.easeInOut),
+    );
 
     // بدء الأنيميشن
     _pulseController.repeat(reverse: true);
@@ -141,12 +141,15 @@ class _CustomAppBarState extends State<CustomAppBar>
             children: [
               _buildStoryIcon(),
               const SizedBox(width: 16),
-              Expanded(
-                child: _buildTitle(),
-              ),
+              Expanded(child: _buildTitle()),
               const SizedBox(width: 16),
 
-              _buildActionButtons(iconActionOne: widget.iconActionOne,iconActionTwo: widget.iconActionTwo ,showBadge: widget.showBadge?? false,),
+              _buildActionButtons(
+                iconActionOne: widget.iconActionOne,
+                iconActionTwo: widget.iconActionTwo,
+                iconActionThree: widget.iconActionThree,
+                showBadge: widget.showBadge ?? false,
+              ),
             ],
           ),
         ),
@@ -206,7 +209,6 @@ class _CustomAppBarState extends State<CustomAppBar>
     );
   }
 
-
   Widget _buildTitle() {
     return AnimatedBuilder(
       animation: _shimmerAnimation,
@@ -215,15 +217,12 @@ class _CustomAppBarState extends State<CustomAppBar>
           alignment: Alignment.center,
           children: [
             // النص الأساسي
-             Text(
+            Text(
               AppLocalizations.of(context)!.appName,
-              style:
-
-
-              TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 24,
+                fontSize: 14,
                 letterSpacing: 1.2,
                 shadows: [
                   Shadow(
@@ -245,9 +244,9 @@ class _CustomAppBarState extends State<CustomAppBar>
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                         colors: [
-                       ColorManager.white.withOpacity(0.2),
-                       ColorManager.primaryColor.withOpacity(0.9),
-                         ColorManager.white.withOpacity(0.9),
+                          ColorManager.white.withOpacity(0.2),
+                          ColorManager.primaryColor.withOpacity(0.9),
+                          ColorManager.white.withOpacity(0.9),
                           // Color(0xFF667eea),
                           // Color(0xFF764ba2).withOpacity(0.3),
                           // Color(0xFF6B73FF),
@@ -259,14 +258,12 @@ class _CustomAppBarState extends State<CustomAppBar>
                         ],
                       ).createShader(bounds);
                     },
-                    child:  Text(
+                    child: Text(
                       AppLocalizations.of(context)!.appName,
-                      style:
-
-                      TextStyle(
+                      style: TextStyle(
                         color: ColorManager.white,
                         fontWeight: FontWeight.w800,
-                        fontSize: 24,
+                        fontSize: 14,
                         letterSpacing: 1.2,
                       ),
                     ),
@@ -280,30 +277,40 @@ class _CustomAppBarState extends State<CustomAppBar>
     );
   }
 
-  Widget _buildActionButtons({IconData? iconActionOne,IconData? iconActionTwo ,bool showBadge = false}) {
+  Widget _buildActionButtons({
+    IconData? iconActionOne,
+    IconData? iconActionTwo,
+    IconData? iconActionThree,
+    bool showBadge = false,
+  }) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-
         _buildActionButton(
-          icon: iconActionTwo?? Icons.notifications_rounded,
+          icon: iconActionTwo ?? Icons.notifications_rounded,
           onTap: () {
             HapticFeedback.lightImpact();
             widget.onTapActionTow?.call();
           },
-          showBadge:showBadge,
+          showBadge: showBadge,
         ),
 
-        const SizedBox(width: 12),
-
+        const SizedBox(width: 8),
 
         _buildActionButton(
-          icon: iconActionOne??Icons.search_rounded,
+          icon: iconActionOne ?? Icons.search_rounded,
           onTap: () {
             HapticFeedback.lightImpact();
             widget.onTapActionOne?.call();
           },
-
+        ),
+        const SizedBox(width: 8),
+        _buildActionButton(
+          icon: iconActionThree ?? Icons.search_rounded,
+          onTap: () {
+            HapticFeedback.lightImpact();
+            widget.onTapActionThree?.call();
+          },
         ),
       ],
     );
@@ -349,11 +356,7 @@ class _CustomAppBarState extends State<CustomAppBar>
 
         child: Stack(
           children: [
-            Icon(
-              icon,
-              color: Colors.white,
-              size: 20,
-            ),
+            Icon(icon, color: Colors.white, size: 20),
             if (showBadge)
               Positioned(
                 top: -2,
@@ -381,23 +384,30 @@ class _CustomAppBarState extends State<CustomAppBar>
   }
 }
 
-
 class SliverCustomAppBar extends StatelessWidget {
   const SliverCustomAppBar({
-    super.key, this.onTapActionTow, this.onTapActionOne, this.iconActionTwo, this.iconActionOne, this.showBadge,
-
+    super.key,
+    this.onTapActionTow,
+    this.onTapActionOne,
+    this.iconActionTwo,
+    this.iconActionOne,
+    this.showBadge,
+    this.onTapActionThree,
+    this.iconActionThree,
   });
 
   final VoidCallback? onTapActionTow;
   final VoidCallback? onTapActionOne;
-  final IconData ? iconActionTwo;
-  final IconData ? iconActionOne;
-  final bool ? showBadge;
+  final VoidCallback? onTapActionThree;
+  final IconData? iconActionTwo;
+  final IconData? iconActionOne;
+  final IconData? iconActionThree;
+  final bool? showBadge;
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-       expandedHeight: 60,
+      expandedHeight: 60,
       centerTitle: true,
       floating: true,
       pinned: true,
@@ -414,11 +424,10 @@ class SliverCustomAppBar extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors:  [
-               ColorManager.primaryColor,
-               ColorManager.primaryColor.withOpacity(0.9),
-               ColorManager.primaryColor,
-
+              colors: [
+                ColorManager.primaryColor,
+                ColorManager.primaryColor.withOpacity(0.9),
+                ColorManager.primaryColor,
               ],
               stops: const [0.0, 0.5, 1.0],
             ),
@@ -428,6 +437,8 @@ class SliverCustomAppBar extends StatelessWidget {
             child: CustomAppBar(
               onTapActionTow: onTapActionOne,
               onTapActionOne: onTapActionTow,
+              onTapActionThree: onTapActionThree,
+              iconActionThree: iconActionThree,
               iconActionOne: iconActionOne,
               iconActionTwo: iconActionTwo,
               showBadge: showBadge,

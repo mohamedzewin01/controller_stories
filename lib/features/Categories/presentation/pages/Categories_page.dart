@@ -88,8 +88,10 @@ class _CategoriesPageState extends State<CategoriesPage>
             SliverCustomAppBar(
               iconActionOne: Icons.music_note_rounded,
               iconActionTwo: Icons.warning,
+              iconActionThree: Icons.remove_from_queue_sharp,
               onTapActionOne: () => _showSearchDialog(),
               onTapActionTow: () => _showAddCategoryDialog(),
+              onTapActionThree: () => _showRequestUser(),
             ),
 
             // Content
@@ -649,26 +651,17 @@ class _CategoriesPageState extends State<CategoriesPage>
         builder: (context) => const AudioNamesPage(),
       ),
     );
-    // showModalBottomSheet(
-    //   context: context,
-    //   isScrollControlled: true,
-    //   backgroundColor: Colors.transparent,
-    //   builder: (context) =>
-    //       CategoryFormDialog(
-    //         onSave: (name, description, isActive) {
-    //           viewModel.insertCategory(categoryName: name,
-    //               categoryDescription: description,
-    //               isActive: isActive);
-    //           Navigator.pop(context);
-    //           CustomSnackBar.showSuccessSnackBar(
-    //             context,
-    //             message: 'تم إضافة الفئة بنجاح',
-    //           );
-    //         },
-    //       ),
-    // );
-  }
 
+  }
+  void _showRequestUser() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AudioNamesPage(),
+      ),
+    );
+
+  }
   void _showEditCategoryDialog(Categories category) {
     showModalBottomSheet(
       context: context,

@@ -1,0 +1,7 @@
+import 'package:controller_stories/core/common/api_result.dart';
+import 'package:controller_stories/features/RequestStory/domain/entities/request_story_entity.dart';
+
+abstract class RequestStoryDatasourceRepo {
+  Future<Result<GetRequestStoryEntity?>>getRequestStories();
+
+}

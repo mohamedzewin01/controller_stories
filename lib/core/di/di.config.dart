@@ -76,6 +76,20 @@ import '../../features/Problems/domain/useCases/Problems_useCase_repo.dart'
 import '../../features/Problems/domain/useCases/Problems_useCase_repo_impl.dart'
     as _i29;
 import '../../features/Problems/presentation/bloc/Problems_cubit.dart' as _i508;
+import '../../features/RequestStory/data/datasources/RequestStory_datasource_repo.dart'
+    as _i22;
+import '../../features/RequestStory/data/datasources/RequestStory_datasource_repo_impl.dart'
+    as _i596;
+import '../../features/RequestStory/data/repositories_impl/RequestStory_repo_impl.dart'
+    as _i168;
+import '../../features/RequestStory/domain/repositories/RequestStory_repository.dart'
+    as _i709;
+import '../../features/RequestStory/domain/useCases/RequestStory_useCase_repo.dart'
+    as _i425;
+import '../../features/RequestStory/domain/useCases/RequestStory_useCase_repo_impl.dart'
+    as _i938;
+import '../../features/RequestStory/presentation/bloc/RequestStory_cubit.dart'
+    as _i782;
 import '../../features/Stories/data/datasources/Stories_datasource_repo.dart'
     as _i1073;
 import '../../features/Stories/data/datasources/Stories_datasource_repo_impl.dart'
@@ -112,6 +126,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1051.ClipsDatasourceRepo>(
       () => _i467.ClipsDatasourceRepoImpl(gh<_i680.ApiService>()),
     );
+    gh.factory<_i22.RequestStoryDatasourceRepo>(
+      () => _i596.RequestStoryDatasourceRepoImpl(gh<_i680.ApiService>()),
+    );
     gh.factory<_i543.HomeUseCaseRepo>(
       () => _i557.HomeUseCase(gh<_i126.HomeRepository>()),
     );
@@ -128,6 +145,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i454.AudioNameDatasourceRepo>(
       () => _i861.AudioNameDatasourceRepoImpl(gh<_i680.ApiService>()),
     );
+    gh.factory<_i709.RequestStoryRepository>(
+      () => _i168.RequestStoryRepositoryImpl(
+        gh<_i22.RequestStoryDatasourceRepo>(),
+      ),
+    );
     gh.factory<_i361.CategoriesUseCaseRepo>(
       () => _i151.CategoriesUseCase(gh<_i208.CategoriesRepository>()),
     );
@@ -137,11 +159,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i444.ClipsRepository>(
       () => _i1053.ClipsRepositoryImpl(gh<_i1051.ClipsDatasourceRepo>()),
     );
+    gh.factory<_i425.RequestStoryUseCaseRepo>(
+      () => _i938.RequestStoryUseCase(gh<_i709.RequestStoryRepository>()),
+    );
     gh.factory<_i337.AudioNameRepository>(
       () => _i486.AudioNameRepositoryImpl(gh<_i454.AudioNameDatasourceRepo>()),
     );
     gh.factory<_i854.ProblemsRepository>(
       () => _i507.ProblemsRepositoryImpl(gh<_i1027.ProblemsDatasourceRepo>()),
+    );
+    gh.factory<_i782.RequestStoryCubit>(
+      () => _i782.RequestStoryCubit(gh<_i425.RequestStoryUseCaseRepo>()),
     );
     gh.factory<_i242.AudioNameUseCaseRepo>(
       () => _i576.AudioNameUseCase(gh<_i337.AudioNameRepository>()),

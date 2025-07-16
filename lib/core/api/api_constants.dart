@@ -31,4 +31,5 @@ class ApiConstants {
   static const String deleteProblem = "controller/problems/delete_problem";
   static const String updateProblem = "controller/problems/update_problem";
   ///-
+ static const String getStoryRequests = "story_requests/get_requests_stories";
 }
