@@ -1,6 +1,8 @@
 
 import 'package:controller_stories/features/AudioName/presentation/pages/audio_names_page.dart';
 import 'package:controller_stories/features/Problems/presentation/pages/Problems_page.dart';
+import 'package:controller_stories/features/RequestStory/presentation/pages/RequestStory_page.dart';
+import 'package:controller_stories/features/RequestStory/presentation/pages/request_story_details_page.dart';
 import 'package:controller_stories/features/Stories/presentation/pages/Stories_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -654,10 +656,13 @@ class _CategoriesPageState extends State<CategoriesPage>
 
   }
   void _showRequestUser() {
+    // للانتقال إلى صفحة التفاصيل من أي مكان:
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const AudioNamesPage(),
+        builder: (context) => RequestStoryPage(
+
+        ),
       ),
     );
 

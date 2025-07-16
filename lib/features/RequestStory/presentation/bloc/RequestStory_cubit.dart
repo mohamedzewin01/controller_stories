@@ -10,7 +10,7 @@ part 'RequestStory_state.dart';
 @injectable
 class RequestStoryCubit extends Cubit<RequestStoryState> {
   RequestStoryCubit(this._requestStoryUseCaseRepo)
-    : super(RequestStoryInitial());
+      : super(RequestStoryInitial());
   final RequestStoryUseCaseRepo _requestStoryUseCaseRepo;
 
   Future<void> getRequestStories() async {
@@ -30,15 +30,18 @@ class RequestStoryCubit extends Cubit<RequestStoryState> {
     }
   }
 
+
   Future<void> addReplies({
     required int requestId,
     required String replyText,
     int? attachedStoryId,
   }) async {
-    emit(RequestStoryLoading());
+
+    emit(AddRepliesLoading());
     var result = await _requestStoryUseCaseRepo.addReplies(
       requestId: requestId,
       replyText: replyText,
+      attachedStoryId: attachedStoryId, // إضافة المعامل المفقود
     );
     switch (result) {
       case Success<AddRepliesEntity?>():
