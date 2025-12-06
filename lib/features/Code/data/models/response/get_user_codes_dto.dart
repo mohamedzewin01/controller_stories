@@ -7,24 +7,15 @@ part 'get_user_codes_dto.g.dart';
 class GetUserCodesDto {
   @JsonKey(name: "status")
   final String? status;
-  @JsonKey(name: "page")
-  final int? page;
-  @JsonKey(name: "per_page")
-  final int? perPage;
-  @JsonKey(name: "total_pages")
-  final int? totalPages;
-  @JsonKey(name: "total_codes")
-  final int? totalCodes;
   @JsonKey(name: "codes")
   final List<Codes>? codes;
+  @JsonKey(name: "pagination")
+  final Pagination? pagination;
 
   GetUserCodesDto ({
     this.status,
-    this.page,
-    this.perPage,
-    this.totalPages,
-    this.totalCodes,
     this.codes,
+    this.pagination,
   });
 
   factory GetUserCodesDto.fromJson(Map<String, dynamic> json) {
@@ -37,10 +28,7 @@ class GetUserCodesDto {
   GetUserCodesEntity toEntity() {
     return GetUserCodesEntity (
       status: status,
-      page: page,
-      perPage: perPage,
-      totalPages: totalPages,
-      totalCodes: totalCodes,
+      pagination: pagination,
       codes: codes,
     );
   }
@@ -72,6 +60,8 @@ class Codes {
   final String? createdAt;
   @JsonKey(name: "updated_at")
   final String? updatedAt;
+  @JsonKey(name: "user_data")
+  final UserData? userData;
 
   Codes ({
     this.id,
@@ -86,6 +76,7 @@ class Codes {
     this.adminStatus,
     this.createdAt,
     this.updatedAt,
+    this.userData,
   });
 
   factory Codes.fromJson(Map<String, dynamic> json) {
@@ -94,6 +85,75 @@ class Codes {
 
   Map<String, dynamic> toJson() {
     return _$CodesToJson(this);
+  }
+}
+
+@JsonSerializable()
+class UserData {
+  @JsonKey(name: "first_name")
+  final String? firstName;
+  @JsonKey(name: "last_name")
+  final String? lastName;
+  @JsonKey(name: "gender")
+  final dynamic? gender;
+  @JsonKey(name: "age")
+  final dynamic? age;
+  @JsonKey(name: "email")
+  final String? email;
+  @JsonKey(name: "role")
+  final String? role;
+  @JsonKey(name: "profile_image")
+  final String? profileImage;
+  @JsonKey(name: "created_at")
+  final String? createdAt;
+  @JsonKey(name: "updated_at")
+  final String? updatedAt;
+
+  UserData ({
+    this.firstName,
+    this.lastName,
+    this.gender,
+    this.age,
+    this.email,
+    this.role,
+    this.profileImage,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory UserData.fromJson(Map<String, dynamic> json) {
+    return _$UserDataFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$UserDataToJson(this);
+  }
+}
+
+@JsonSerializable()
+class Pagination {
+  @JsonKey(name: "page")
+  final int? page;
+  @JsonKey(name: "per_page")
+  final int? perPage;
+  @JsonKey(name: "total_pages")
+  final int? totalPages;
+  @JsonKey(name: "total_records")
+  final int? totalRecords;
+
+  Pagination ({
+    this.page,
+    this.perPage,
+    this.totalPages,
+    this.totalRecords,
+  });
+
+  factory Pagination.fromJson(Map<String, dynamic> json) {
+    return _$PaginationFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$PaginationToJson(this);
   }
 }
 
