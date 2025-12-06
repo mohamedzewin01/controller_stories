@@ -297,7 +297,7 @@ class _CategoriesPageState extends State<CategoriesPage>
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 0.85,
+              childAspectRatio: 0.72,
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
             ),
@@ -435,7 +435,7 @@ class _CategoriesPageState extends State<CategoriesPage>
                             child: Icon(
                               Icons.category_rounded,
                               color: ColorManager.primaryColor,
-                              size: 24,
+                              size: 22,
                             ),
                           ),
                           PopupMenuButton<String>(
@@ -647,14 +647,34 @@ class _CategoriesPageState extends State<CategoriesPage>
 
   // Dialog Methods
   void _showAddCategoryDialog() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const AudioNamesPage(),
-      ),
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) =>
+          CategoryFormDialog(
+            onSave: (name, description, isActive) {
+              viewModel.insertCategory(categoryName: name,
+                  categoryDescription: description,
+                  isActive: isActive);
+              Navigator.pop(context);
+              CustomSnackBar.showSuccessSnackBar(
+                context,
+                message: 'تم إضافة الفئة بنجاح',
+              );
+            },
+          ),
     );
-
   }
+  // void _showAddCategoryDialog() {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => const AddC(),
+  //     ),
+  //   );
+  //
+  // }
   void _showRequestUser() {
     // للانتقال إلى صفحة التفاصيل من أي مكان:
     Navigator.push(
@@ -976,142 +996,144 @@ class CategoryDetailsSheet extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      ColorManager.primaryColor.withOpacity(0.2),
-                      Colors.blue.shade100.withOpacity(0.3),
-                    ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        ColorManager.primaryColor.withOpacity(0.2),
+                        Colors.blue.shade100.withOpacity(0.3),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  Icons.category_rounded,
-                  color: ColorManager.primaryColor,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      category.categoryName ?? 'بدون اسم',
-                      style: getBoldStyle(
-                        color: ColorManager.titleColor,
-                        fontSize: 18,
-                      ),
-                    ),
-                    Text(
-                      'تفاصيل الفئة',
-                      style: getRegularStyle(
-                        color: Colors.grey[600],
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.close_rounded),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 24),
-
-          // Details Cards
-          _buildDetailCard(
-            'الوصف',
-            category.categoryDescription ?? 'لا يوجد وصف',
-            Icons.description_rounded,
-          ),
-
-          const SizedBox(height: 16),
-
-          Row(
-            children: [
-              Expanded(
-                child: _buildDetailCard(
-                  'الحالة',
-                  category.isActive == '1' ? 'نشط' : 'غير نشط',
-                  Icons.toggle_on_rounded,
-                  color: category.isActive == '1' ? Colors.green : Colors.red,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: _buildDetailCard(
-                  'تاريخ الإنشاء',
-                  _formatDate(category.createdAt),
-                  Icons.calendar_today_rounded,
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 24),
-
-          // Action Buttons
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    // TODO: Navigate to edit
-                  },
-                  icon: const Icon(Icons.edit_rounded),
-                  label: const Text('تعديل'),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                  child: Icon(
+                    Icons.category_rounded,
+                    color: ColorManager.primaryColor,
+                    size: 24,
                   ),
                 ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => StoriesPage(
-                          categoryId:category.categoryId??0 ,
-                          categoryName: category.categoryName??'',
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        category.categoryName ?? 'بدون اسم',
+                        style: getBoldStyle(
+                          color: ColorManager.titleColor,
+                          fontSize: 18,
                         ),
                       ),
-                    );
-                  },
-                  icon: const Icon(Icons.auto_stories_rounded),
-                  label: const Text('القصص'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorManager.primaryColor,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      Text(
+                        'تفاصيل الفئة',
+                        style: getRegularStyle(
+                          color: Colors.grey[600],
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.close_rounded),
+                ),
+              ],
+            ),
+        
+            const SizedBox(height: 24),
+        
+            // Details Cards
+            _buildDetailCard(
+              'الوصف',
+              category.categoryDescription ?? 'لا يوجد وصف',
+              Icons.description_rounded,
+            ),
+        
+            const SizedBox(height: 16),
+        
+            Row(
+              children: [
+                Expanded(
+                  child: _buildDetailCard(
+                    'الحالة',
+                    category.isActive == '1' ? 'نشط' : 'غير نشط',
+                    Icons.toggle_on_rounded,
+                    color: category.isActive == '1' ? Colors.green : Colors.red,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _buildDetailCard(
+                    'تاريخ الإنشاء',
+                    _formatDate(category.createdAt),
+                    Icons.calendar_today_rounded,
+                  ),
+                ),
+              ],
+            ),
+        
+            const SizedBox(height: 24),
+        
+            // Action Buttons
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      // TODO: Navigate to edit
+                    },
+                    icon: const Icon(Icons.edit_rounded),
+                    label: const Text('تعديل'),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StoriesPage(
+                            categoryId:category.categoryId??0 ,
+                            categoryName: category.categoryName??'',
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.auto_stories_rounded),
+                    label: const Text('القصص'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorManager.primaryColor,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

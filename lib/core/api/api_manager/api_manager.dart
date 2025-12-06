@@ -20,6 +20,10 @@ import 'package:controller_stories/features/Clips/data/models/response/add_clips
 import 'package:controller_stories/features/Clips/data/models/response/delete_clip_dto.dart';
 import 'package:controller_stories/features/Clips/data/models/response/edit_clip_dto.dart';
 import 'package:controller_stories/features/Clips/data/models/response/fetch_clips_dto.dart';
+import 'package:controller_stories/features/Code/data/models/request/create_active_code_request.dart';
+import 'package:controller_stories/features/Code/data/models/request/get_user_codes_request.dart';
+import 'package:controller_stories/features/Code/data/models/response/create_active_code_dto.dart';
+import 'package:controller_stories/features/Code/data/models/response/get_user_codes_dto.dart';
 import 'package:controller_stories/features/Problems/data/models/request/add_problem_request.dart';
 import 'package:controller_stories/features/Problems/data/models/request/delete_problem_request.dart';
 import 'package:controller_stories/features/Problems/data/models/request/update_problem_request.dart';
@@ -56,122 +60,143 @@ abstract class ApiService {
 
   @POST(ApiConstants.insertCategory)
   Future<InsertCategoryDto?> insertCategory(
-      @Body() InsertCategoryRequest insertCategoryRequest,);
+    @Body() InsertCategoryRequest insertCategoryRequest,
+  );
 
   @POST(ApiConstants.updateCategory)
   Future<UpdateCategoryDto?> updateCategory(
-      @Body() UpdateCategoryRequest updateCategoryRequest,);
+    @Body() UpdateCategoryRequest updateCategoryRequest,
+  );
 
   @POST(ApiConstants.deleteCategory)
   Future<DeleteCategoryDto?> deleteCategory(
-      @Body() DeleteCategoryRequest deleteCategoryRequest,);
+    @Body() DeleteCategoryRequest deleteCategoryRequest,
+  );
 
   @POST(ApiConstants.fetchStoriesByCategory)
   Future<FetchStoriesByCategoryDto?> fetchStoriesByCategory(
-      @Body() FetchStoriesByCategoryRequest fetchStoriesByCategoryRequest,);
+    @Body() FetchStoriesByCategoryRequest fetchStoriesByCategoryRequest,
+  );
 
   @POST(ApiConstants.deleteStory)
   Future<DeleteStoryDto?> deleteStory(
-      @Body() DeleteStoryRequest deleteStoryRequest,);
+    @Body() DeleteStoryRequest deleteStoryRequest,
+  );
 
   @MultiPart()
   @POST(ApiConstants.addStory)
-  Future<AddStoryDto?> addStory(@Part(name: "story_title") String? title,
-      @Part(name: "story_description") String? storyDescription,
-      @Part(name: "problem_id") int? problemId,
-      @Part(name: "gender") String? gender,
-      @Part(name: "age_group") String? ageGroup,
-      @Part(name: "category_id") int? categoryId,
-      @Part(name: "is_active") int? isActive,
-      @Part(name: "image_cover") File? imageCover,
-      @Part(name: "best_friend_gender") String? bestFriendGender,);
+  Future<AddStoryDto?> addStory(
+    @Part(name: "story_title") String? title,
+    @Part(name: "story_description") String? storyDescription,
+    @Part(name: "problem_id") int? problemId,
+    @Part(name: "gender") String? gender,
+    @Part(name: "age_group") String? ageGroup,
+    @Part(name: "category_id") int? categoryId,
+    @Part(name: "is_active") int? isActive,
+    @Part(name: "image_cover") File? imageCover,
+    @Part(name: "best_friend_gender") String? bestFriendGender,
+  );
 
   @MultiPart()
   @POST(ApiConstants.updateStory)
-  Future<UpdateStoryDto?> updateStory(@Part(name: "story_id") int storyId,
-      @Part(name: "story_title") String? title,
-      @Part(name: "story_description") String? storyDescription,
-      @Part(name: "problem_id") int? problemId,
-      @Part(name: "gender") String? gender,
-      @Part(name: "age_group") String? ageGroup,
-      @Part(name: "category_id") int? categoryId,
-      @Part(name: "is_active") int? isActive,
-      @Part(name: "image_cover") File? imageCover,
-      @Part(name: "best_friend_gender") String? bestFriendGender,);
+  Future<UpdateStoryDto?> updateStory(
+    @Part(name: "story_id") int storyId,
+    @Part(name: "story_title") String? title,
+    @Part(name: "story_description") String? storyDescription,
+    @Part(name: "problem_id") int? problemId,
+    @Part(name: "gender") String? gender,
+    @Part(name: "age_group") String? ageGroup,
+    @Part(name: "category_id") int? categoryId,
+    @Part(name: "is_active") int? isActive,
+    @Part(name: "image_cover") File? imageCover,
+    @Part(name: "best_friend_gender") String? bestFriendGender,
+  );
 
   @POST(ApiConstants.fetchClips)
   Future<FetchClipsDto?> fetchClips(
-      @Body() FetchClipsRequest fetchClipsRequest,);
+    @Body() FetchClipsRequest fetchClipsRequest,
+  );
 
   @POST(ApiConstants.deleteClip)
   Future<DeleteClipDto?> deleteClip(
-      @Body() DeleteClipRequest deleteClipRequest,);
+    @Body() DeleteClipRequest deleteClipRequest,
+  );
 
   @MultiPart()
   @POST(ApiConstants.addClip)
-  Future<AddClipsDto?> addClip(@Part(name: "story_id") int storyId,
-      @Part(name: "clip_text") String? clipText,
-      @Part(name: "sort_order") String? sortOrder,
-      @Part(name: "pause_after_name") int? afterName,
-      @Part(name: "insert_child_name") bool? childName,
-      @Part(name: "insert_siblings_name") bool? siblingsName,
-      @Part(name: "insert_friends_name") bool? friendsName,
-      @Part(name: "insert_best_playmate") bool? bestFriendGender,
-      @Part(name: "kids_favorite_images") bool? imageFavorite,
-      @Part(name: "image") File? image,
-      @Part(name: "audio") File? audio,);
+  Future<AddClipsDto?> addClip(
+    @Part(name: "story_id") int storyId,
+    @Part(name: "clip_text") String? clipText,
+    @Part(name: "sort_order") String? sortOrder,
+    @Part(name: "pause_after_name") int? afterName,
+    @Part(name: "insert_child_name") bool? childName,
+    @Part(name: "insert_siblings_name") bool? siblingsName,
+    @Part(name: "insert_friends_name") bool? friendsName,
+    @Part(name: "insert_best_playmate") bool? bestFriendGender,
+    @Part(name: "kids_favorite_images") bool? imageFavorite,
+    @Part(name: "image") File? image,
+    @Part(name: "audio") File? audio,
+  );
 
   @MultiPart()
   @POST(ApiConstants.editClip)
-  Future<EditClipDto?> editClip(@Part(name: "clip_group_id") int clipGroupId,
-      @Part(name: "clip_text") String? clipText,
-      @Part(name: "pause_after_name") int? afterName,
-      @Part(name: "sort_order") int? sortOrder,
-      @Part(name: "insert_child_name") bool? childName,
-      @Part(name: "insert_siblings_name") bool? siblingsName,
-      @Part(name: "insert_friends_name") bool? friendsName,
-      @Part(name: "insert_best_playmate") bool? bestFriendGender,
-      @Part(name: "kids_favorite_images") bool? imageFavorite,
-      @Part(name: "image") File? image,
-      @Part(name: "audio") File? audio,);
+  Future<EditClipDto?> editClip(
+    @Part(name: "clip_group_id") int clipGroupId,
+    @Part(name: "clip_text") String? clipText,
+    @Part(name: "pause_after_name") int? afterName,
+    @Part(name: "sort_order") int? sortOrder,
+    @Part(name: "insert_child_name") bool? childName,
+    @Part(name: "insert_siblings_name") bool? siblingsName,
+    @Part(name: "insert_friends_name") bool? friendsName,
+    @Part(name: "insert_best_playmate") bool? bestFriendGender,
+    @Part(name: "kids_favorite_images") bool? imageFavorite,
+    @Part(name: "image") File? image,
+    @Part(name: "audio") File? audio,
+  );
 
   @POST(ApiConstants.getProblems)
   Future<GetProblemsDto?> getProblems();
 
   @POST(ApiConstants.addProblem)
   Future<AddProblemDto?> addProblem(
-      @Body() AddProblemRequest addProblemRequest,);
+    @Body() AddProblemRequest addProblemRequest,
+  );
 
   @POST(ApiConstants.updateProblem)
   Future<UpdateProblemDto?> updateProblem(
-      @Body() UpdateProblemRequest updateProblemRequest,);
+    @Body() UpdateProblemRequest updateProblemRequest,
+  );
 
   @POST(ApiConstants.deleteProblem)
   Future<DeleteProblemDto?> deleteProblem(
-      @Body() DeleteProblemRequest updateProblemRequest,);
+    @Body() DeleteProblemRequest updateProblemRequest,
+  );
 
   @MultiPart()
   @POST(ApiConstants.addChildName)
-  Future<AddAudioNameDto?> addChildName(@Part(name: "name") String? childName,
-      @Part(name: "audio_file") File? audio,);
+  Future<AddAudioNameDto?> addChildName(
+    @Part(name: "name") String? childName,
+    @Part(name: "audio_file") File? audio,
+  );
 
   @MultiPart()
   @POST(ApiConstants.deleteChildName)
   Future<DeleteAudioNameDto?> deleteChildName(
-      @Part(name: "name_audio_id") int? nameAudioId,);
+    @Part(name: "name_audio_id") int? nameAudioId,
+  );
 
   @MultiPart()
   @POST(ApiConstants.updateChildName)
   Future<UpdateChildNameDto?> updateChildName(
-      @Part(name: "name_audio_id") int? nameAudioId,
-      @Part(name: "name") String? name,
-      @Part(name: "audio_file") File? audioFile,);
+    @Part(name: "name_audio_id") int? nameAudioId,
+    @Part(name: "name") String? name,
+    @Part(name: "audio_file") File? audioFile,
+  );
 
   @POST(ApiConstants.searchAudioName)
   Future<SearchNameAudioDto?> searchAudioName(
-      @Body() SearchNameRequest searchNameRequest,);
-
-
+    @Body() SearchNameRequest searchNameRequest,
+  );
 
   @POST(ApiConstants.nameAudioEmpty)
   Future<AudioFileEmptyDto?> nameAudioEmpty();
@@ -179,20 +204,24 @@ abstract class ApiService {
   @POST(ApiConstants.fetchNamesAudio)
   Future<GetNamesAudioDto?> fetchNamesAudio();
 
-
   @POST(ApiConstants.getStoryRequests)
   Future<GetRequestStoryDto?> getStoryRequests();
-
 
   @POST(ApiConstants.getAllStories)
   Future<GetAllStoriesDto?> getAllStories();
 
-
-
   @POST(ApiConstants.addReplies)
   Future<AddRepliesDto?> addReplies(
-      @Body() AddRepliesRequest addRepliesRequest,
-      );
+    @Body() AddRepliesRequest addRepliesRequest,
+  );
 
+  @POST(ApiConstants.createActiveCode)
+  Future<CreateActiveCodeDto?> createActiveCode(
+    @Body() CreateActiveCodeRequest createActiveCodeRequest,
+  );
 
+  @POST(ApiConstants.getUserCodes)
+  Future<GetUserCodesDto?> getUserCodes(
+    @Body() GetUserCodesRequest getUserCodesRequest,
+  );
 }

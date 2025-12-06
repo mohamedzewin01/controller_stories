@@ -34,4 +34,7 @@ class ApiConstants {
  static const String getStoryRequests = "story_requests/get_requests_stories";
  static const String addReplies = "story_requests/story_request_replies";
  static const String getAllStories = "story_requests/get_all_stories";
+ ///-
+ static const String createActiveCode = "user_codes/create_active_code";
+ static const String getUserCodes = "user_codes/get_user_codes";
 }

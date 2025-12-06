@@ -53,6 +53,19 @@ import '../../features/Clips/domain/useCases/Clips_useCase_repo.dart' as _i380;
 import '../../features/Clips/domain/useCases/Clips_useCase_repo_impl.dart'
     as _i847;
 import '../../features/Clips/presentation/bloc/Clips_cubit.dart' as _i92;
+import '../../features/Code/data/datasources/Code_datasource_repo.dart'
+    as _i452;
+import '../../features/Code/data/datasources/Code_datasource_repo_impl.dart'
+    as _i536;
+import '../../features/Code/data/repositories_impl/Code_repo_impl.dart'
+    as _i400;
+import '../../features/Code/domain/repositories/Code_repository.dart' as _i337;
+import '../../features/Code/domain/useCases/Code_useCase_repo.dart' as _i984;
+import '../../features/Code/domain/useCases/Code_useCase_repo_impl.dart'
+    as _i289;
+import '../../features/Code/presentation/bloc/Code_cubit.dart' as _i488;
+import '../../features/Code/presentation/bloc/get_user_codes/get_user_codes_cubit.dart'
+    as _i937;
 import '../../features/Home/data/datasources/Home_datasource_repo.dart'
     as _i827;
 import '../../features/Home/data/datasources/Home_datasource_repo_impl.dart'
@@ -142,6 +155,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i371.HomeCubit>(
       () => _i371.HomeCubit(gh<_i543.HomeUseCaseRepo>()),
     );
+    gh.factory<_i452.CodeDatasourceRepo>(
+      () => _i536.CodeDatasourceRepoImpl(gh<_i680.ApiService>()),
+    );
     gh.factory<_i454.AudioNameDatasourceRepo>(
       () => _i861.AudioNameDatasourceRepoImpl(gh<_i680.ApiService>()),
     );
@@ -158,6 +174,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i444.ClipsRepository>(
       () => _i1053.ClipsRepositoryImpl(gh<_i1051.ClipsDatasourceRepo>()),
+    );
+    gh.factory<_i337.CodeRepository>(
+      () => _i400.CodeRepositoryImpl(gh<_i452.CodeDatasourceRepo>()),
     );
     gh.factory<_i425.RequestStoryUseCaseRepo>(
       () => _i938.RequestStoryUseCase(gh<_i709.RequestStoryRepository>()),
@@ -180,8 +199,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i55.StoriesRepository>(
       () => _i166.StoriesRepositoryImpl(gh<_i1073.StoriesDatasourceRepo>()),
     );
+    gh.factory<_i984.CodeUseCaseRepo>(
+      () => _i289.CodeUseCase(gh<_i337.CodeRepository>()),
+    );
     gh.factory<_i380.ClipsUseCaseRepo>(
       () => _i847.ClipsUseCase(gh<_i444.ClipsRepository>()),
+    );
+    gh.factory<_i488.CodeCubit>(
+      () => _i488.CodeCubit(gh<_i984.CodeUseCaseRepo>()),
+    );
+    gh.factory<_i937.GetUserCodesCubit>(
+      () => _i937.GetUserCodesCubit(gh<_i984.CodeUseCaseRepo>()),
     );
     gh.factory<_i643.CategoriesCubit>(
       () => _i643.CategoriesCubit(gh<_i361.CategoriesUseCaseRepo>()),
